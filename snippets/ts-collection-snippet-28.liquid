@@ -1,0 +1,105 @@
+{{ 'ts-collection-snippet-28.css' | asset_url | stylesheet_tag }}
+<div class="ts-collection-snippet-wrapper">
+  <div class="ts-collection-snippet-header">
+    <div class="ts-collection-snippet-title">
+      {{ collection.title }}
+    </div>
+    {%- if collection.metafields.custom.info != blank -%}
+    <div class="ts-collection-snippet-info">
+      {{ collection.metafields.custom.info }}
+    </div>
+    {%- endif -%}
+
+  </div>
+
+  <div class="ts-collection-snippet-outer-slider">
+    <div class="swiper ts-collection-snippet-swiper">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% if block.type == 'collection' %}
+            <div class="swiper-slide">
+              <a href="{{ block.settings.link }}" class="ts-collection-snippet-block">
+                <div
+                  class="ts-collection-snippet-block-border{% if collection.url == block.settings.link %} ts-collection-snippet-block-border-active{% endif %}"
+                >
+                  {% if block.settings.image %}
+                    <img
+                      src="{{ block.settings.image | image_url: width: 200 }}"
+                      class="ts-collection-snippet-img"
+                      loading="lazy"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}"
+                      alt="{{ block.settings.text | escape }}"
+                    >
+                  {% endif %}
+                </div>
+
+                <div class="ts-collection-snippet-label">
+                  {{ block.settings.text }}
+                </div>
+              </a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'swiper-11.2.10-bundle.min.js' | asset_url }}" defer></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  new Swiper(".ts-collection-snippet-swiper", {
+    slidesPerView: 11,
+    spaceBetween: 20,
+    loop: false,
+    watchOverflow: true,
+    observer: true,
+    observeParents: true,
+
+    breakpoints: {
+      320: {
+        slidesPerView: 3.5,
+        spaceBetween: 22
+      },
+      425: {
+        slidesPerView: 4,
+        spaceBetween: 22
+      },
+      500: {
+        slidesPerView: 5,
+        spaceBetween: 22
+      },
+      600: {
+        slidesPerView: 6,
+        spaceBetween: 22
+      },
+      700: {
+        slidesPerView: 8,
+        spaceBetween: 22
+      },
+      768: {
+        slidesPerView: 8.3,
+        spaceBetween: 20
+      },
+      800: {
+        slidesPerView: 9,
+        spaceBetween: 20
+      },
+       900: {
+        slidesPerView: 10,
+        spaceBetween: 20
+      },
+       1000: {
+        slidesPerView: 11,
+        spaceBetween: 20
+      },
+      1200: {
+        slidesPerView: 12,
+        spaceBetween: 20
+      }
+    }
+  });
+});
+</script>

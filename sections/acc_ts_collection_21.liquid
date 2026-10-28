@@ -1,0 +1,694 @@
+{%- comment -%}
+  ACC_TS_Collection_21: reviews bar + infinite image marquee.
+  Built from the winning variation (variations/1). No JS: the loop is pure CSS.
+  Liquid repeats the image set until one group is wider than the widest screen we
+  support, renders two identical groups, and both scroll by exactly one group width.
+  The duration is derived from the group width and the speed setting, so the speed
+  stays the same whatever the number or size of the images.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign size_d = s.image_size_desktop
+  assign size_m = s.image_size_mobile
+  assign size_d_2x = size_d | times: 2
+
+  assign count = 0
+  for block in section.blocks
+    if block.settings.image != blank or block.settings.image_url != blank or request.design_mode
+      assign count = count | plus: 1
+    endif
+  endfor
+
+  assign show_marquee = false
+  if s.show_marquee and count > 0
+    assign show_marquee = true
+  endif
+
+  assign reps = 1
+  assign dur_d = 0
+  assign dur_m = 0
+  if show_marquee
+    assign unit_d = size_d | plus: s.gap
+    assign unit_m = size_m | plus: s.gap
+    assign set_d = unit_d | times: count
+    assign set_m = unit_m | times: count
+    assign reps_d = 3840.0 | divided_by: set_d | ceil
+    assign reps_m = 768.0 | divided_by: set_m | ceil
+    assign reps = reps_d | at_least: reps_m | at_least: 1 | at_most: 50
+    assign dur_d = set_d | times: reps | times: 1.0 | divided_by: s.speed | round: 2
+    assign dur_m = set_m | times: reps | times: 1.0 | divided_by: s.speed | round: 2
+  endif
+
+  assign img_sizes = '(max-width: 768px) ' | append: size_m | append: 'px, ' | append: size_d | append: 'px'
+-%}
+
+{%- if s.show_review_bar or show_marquee -%}
+  <section
+    id="ts21-{{ section.id }}"
+    class="ts21{% if s.bar_position == 'below' %} ts21--bar-below{% endif %}{% if s.pause_on_hover %} ts21--pause{% endif %}"
+    aria-label="{{ s.aria_label | escape }}"
+    style="
+      --ts21-pt: {{ s.padding_top }}px;
+      --ts21-pb: {{ s.padding_bottom }}px;
+      --ts21-font: {{ s.font_family | escape }};
+      --ts21-text: {{ s.text_color }};
+      --ts21-bar-bg: {{ s.bar_bg }};
+      --ts21-star: {{ s.star_color }};
+      --ts21-fs-d: {{ s.font_size_desktop }}px;
+      --ts21-fs-m: {{ s.font_size_mobile }}px;
+      --ts21-rating-weight: 600;
+      --ts21-bar-py: {{ s.bar_padding_y }}px;
+      --ts21-bar-px-d: {{ s.bar_padding_x_desktop }}px;
+      --ts21-bar-px-m: {{ s.bar_padding_x_mobile }}px;
+      --ts21-size-d: {{ size_d }}px;
+      --ts21-size-m: {{ size_m }}px;
+      --ts21-gap: {{ s.gap }}px;
+      --ts21-radius: {{ s.image_radius }}px;
+      --ts21-fit: {{ s.image_fit }};
+      --ts21-img-bg: {{ s.image_bg }};
+      --ts21-dur-d: {{ dur_d }}s;
+      --ts21-dur-m: {{ dur_m }}s;
+      --ts21-dir: {% if s.direction == 'right' %}reverse{% else %}normal{% endif %};
+    "
+  >
+    {%- if s.show_review_bar -%}
+      {%- if s.review_link != blank -%}
+        <a class="ts21-bar ts21-bar--link" href="{{ s.review_link }}">
+      {%- else -%}
+        <div class="ts21-bar">
+      {%- endif -%}
+      {%- if s.star_count > 0 or s.rating != blank -%}
+        <div class="ts21-rating-group">
+          {%- if s.star_count > 0 -%}
+            <span class="ts21-stars" aria-hidden="true">
+              {%- for i in (1..s.star_count) -%}
+                <svg class="ts21-star" xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none" focusable="false"><path d="M14.6838 5.42858C14.6838 5.21905 14.5247 5.08572 14.2067 5.02858L9.85722 4.37144L7.921 0.371435C7.80875 0.142864 7.66845 0.0285788 7.50008 0.0285788C7.33171 0.0285788 7.19141 0.142864 7.07916 0.371435L5.14294 4.37144L0.793447 5.02858C0.47542 5.08572 0.316406 5.21905 0.316406 5.42858C0.316406 5.56191 0.391236 5.70477 0.540896 5.85715L3.68375 8.97144L2.9261 13.3714C2.9261 13.4476 2.9261 13.5048 2.9261 13.5429C2.9261 13.6571 2.95416 13.7571 3.01028 13.8429C3.06641 13.9286 3.15994 13.9714 3.2909 13.9714C3.38443 13.9714 3.49668 13.9333 3.62763 13.8571L7.50008 11.8L11.3725 13.8571C11.5035 13.9333 11.6157 13.9714 11.7093 13.9714C11.8402 13.9714 11.9338 13.9286 11.9899 13.8429C12.046 13.7571 12.0741 13.6571 12.0741 13.5429C12.0741 13.4667 12.0741 13.4095 12.0741 13.3714L11.3164 8.97144L14.4593 5.85715C14.6089 5.70477 14.6838 5.56191 14.6838 5.42858Z" fill="currentColor"/></svg>
+              {%- endfor -%}
+            </span>
+          {%- endif -%}
+          {%- if s.rating != blank -%}
+            <span class="ts21-rating">{{ s.rating | escape }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if s.review_text != blank -%}
+        <p class="ts21-review-text">{{ s.review_text }}</p>
+      {%- endif -%}
+      {%- if s.review_link != blank -%}
+        </a>
+      {%- else -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if show_marquee -%}
+      <div class="ts21-marquee">
+        {%- for g in (1..2) -%}
+          <div class="ts21-group">
+            {%- for rep in (1..reps) -%}
+              {%- liquid
+                assign is_copy = true
+                if g == 1 and rep == 1
+                  assign is_copy = false
+                endif
+              -%}
+              {%- for block in section.blocks -%}
+                {%- liquid
+                  assign b = block.settings
+                  if b.image == blank and b.image_url == blank
+                    unless request.design_mode
+                      continue
+                    endunless
+                  endif
+
+                  assign alt = ''
+                  unless is_copy
+                    assign alt = b.alt | default: b.image.alt | default: ''
+                  endunless
+
+                  assign loading = 'lazy'
+                  if is_copy == false and forloop.index <= 3
+                    assign loading = 'eager'
+                  endif
+
+                  assign src = b.image_url | strip
+                  assign src_2x = ''
+                  if b.image == blank and src != blank
+                    assign src_head = src | slice: 0, 2
+                    if src_head == '//'
+                      assign src = 'https:' | append: src
+                    endif
+                    if src contains 'cdn.shopify.com' or src contains '/cdn/shop/'
+                      assign sep = '?'
+                      if src contains '?'
+                        assign sep = '&'
+                      endif
+                      assign src_base = src
+                      assign src = src_base | append: sep | append: 'width=' | append: size_d
+                      assign src_2x = src_base | append: sep | append: 'width=' | append: size_d_2x
+                    endif
+                  endif
+                -%}
+                {%- if b.link != blank -%}
+                  <a
+                    class="ts21-item"
+                    href="{{ b.link }}"
+                    {%- if is_copy %} tabindex="-1" aria-hidden="true"{% elsif alt != blank %} aria-label="{{ alt | escape }}"{% endif %}
+                    {%- unless is_copy %} {{ block.shopify_attributes }}{% endunless -%}
+                  >
+                {%- else -%}
+                  <div
+                    class="ts21-item"
+                    {%- if is_copy %} aria-hidden="true"{% endif %}
+                    {%- unless is_copy %} {{ block.shopify_attributes }}{% endunless -%}
+                  >
+                {%- endif -%}
+                {%- if b.image != blank -%}
+                  {{
+                    b.image
+                    | image_url: width: 520
+                    | image_tag:
+                      widths: '100, 150, 200, 260, 360, 520',
+                      sizes: img_sizes,
+                      loading: loading,
+                      class: 'ts21-img',
+                      alt: alt
+                  }}
+                {%- elsif src != blank -%}
+                  <img
+                    class="ts21-img"
+                    src="{{ src }}"
+                    {%- if src_2x != blank %} srcset="{{ src }} 1x, {{ src_2x }} 2x"{% endif %}
+                    alt="{{ alt | escape }}"
+                    width="{{ size_d }}"
+                    height="{{ size_d }}"
+                    loading="{{ loading }}"
+                  >
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'ts21-img ts21-img--placeholder' }}
+                {%- endif -%}
+                {%- if b.link != blank -%}
+                  </a>
+                {%- else -%}
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+  @keyframes ts21-scroll {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(calc(-100% - var(--ts21-gap, 0px)), 0, 0); }
+  }
+
+  .ts21 {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: var(--ts21-pt, 0px) 0 var(--ts21-pb, 0px);
+    font-family: var(--ts21-font, inherit);
+    line-height: normal;
+    color: var(--ts21-text, #000);
+  }
+
+  .ts21 *,
+  .ts21 *::before,
+  .ts21 *::after {
+    box-sizing: inherit;
+  }
+
+  .ts21--bar-below {
+    flex-direction: column-reverse;
+  }
+
+  .ts21 .ts21-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 4px 13px;
+    padding: var(--ts21-bar-py) var(--ts21-bar-px-d);
+    background: var(--ts21-bar-bg, #e2e2e2);
+    color: var(--ts21-text, #000);
+    font-size: var(--ts21-fs-d);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .ts21 .ts21-bar--link:hover .ts21-review-text,
+  .ts21 .ts21-bar--link:focus-visible .ts21-review-text {
+    text-decoration: underline;
+  }
+
+  .ts21 .ts21-rating-group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .ts21 .ts21-stars {
+    display: flex;
+    flex-shrink: 0;
+    gap: 2px;
+    color: var(--ts21-star, #fbcd0a);
+  }
+
+  .ts21 .ts21-star {
+    display: block;
+    width: 15px;
+    height: 14px;
+  }
+
+  .ts21 .ts21-rating {
+    font-size: inherit;
+    font-weight: var(--ts21-rating-weight, 600);
+    line-height: normal;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .ts21 .ts21-review-text {
+    margin: 0;
+    font-size: inherit;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: normal;
+    color: inherit;
+  }
+
+  .ts21 .ts21-review-text a {
+    color: inherit;
+  }
+
+  .ts21 .ts21-marquee {
+    display: flex;
+    gap: var(--ts21-gap, 0px);
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .ts21 .ts21-group {
+    display: flex;
+    flex-shrink: 0;
+    gap: var(--ts21-gap, 0px);
+    will-change: transform;
+    animation: ts21-scroll var(--ts21-dur-d, 45s) linear infinite;
+    animation-direction: var(--ts21-dir, normal);
+  }
+
+  .ts21--pause .ts21-marquee:hover .ts21-group,
+  .ts21--pause .ts21-marquee:focus-within .ts21-group {
+    animation-play-state: paused;
+  }
+
+  .ts21 .ts21-item {
+    display: block;
+    flex-shrink: 0;
+    width: var(--ts21-size-d);
+    height: var(--ts21-size-d);
+    overflow: hidden;
+    border-radius: var(--ts21-radius, 0px);
+    background: var(--ts21-img-bg, #fff);
+  }
+
+  .ts21 .ts21-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    object-fit: var(--ts21-fit, cover);
+    object-position: center;
+    pointer-events: none;
+  }
+
+  .ts21 .ts21-img--placeholder {
+    background: #f2f2f2;
+    fill: #c4c4c4;
+  }
+
+  @media (max-width: 768px) {
+    .ts21 .ts21-bar {
+      padding-right: var(--ts21-bar-px-m);
+      padding-left: var(--ts21-bar-px-m);
+      font-size: var(--ts21-fs-m);
+    }
+
+    .ts21 .ts21-item {
+      width: var(--ts21-size-m);
+      height: var(--ts21-size-m);
+    }
+
+    .ts21 .ts21-group {
+      animation-duration: var(--ts21-dur-m, 45s);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ts21 .ts21-group {
+      animation: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "acc_ts_collection_21",
+  "class": "acc_ts_collection_21",
+  "tag": "div",
+  "max_blocks": 30,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "bar_position",
+      "label": "Review bar position",
+      "options": [
+        { "value": "above", "label": "Above images" },
+        { "value": "below", "label": "Below images" }
+      ],
+      "default": "above"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Space above section",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Space below section",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "font_family",
+      "label": "Font family",
+      "info": "CSS font-family value. Use 'inherit' to follow the theme font.",
+      "default": "Montserrat, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+    },
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Accessible section name",
+      "info": "Read by screen readers. Not visible.",
+      "default": "Customer reviews"
+    },
+    {
+      "type": "header",
+      "content": "Review bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_review_bar",
+      "label": "Show review bar",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "star_count",
+      "label": "Stars",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 1,
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Rating",
+      "default": "4.7/5",
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "review_text",
+      "label": "Review text",
+      "default": "40,000+ five-star verified reviews",
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "url",
+      "id": "review_link",
+      "label": "Review bar link",
+      "info": "Optional. Makes the whole bar clickable, e.g. to a reviews page.",
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "label": "Text size, desktop",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 10,
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Text size, mobile",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 10,
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "range",
+      "id": "bar_padding_y",
+      "label": "Bar padding, top and bottom",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 13,
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "range",
+      "id": "bar_padding_x_desktop",
+      "label": "Bar padding, sides, desktop",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 68,
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "range",
+      "id": "bar_padding_x_mobile",
+      "label": "Bar padding, sides, mobile",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "color",
+      "id": "bar_bg",
+      "label": "Bar background",
+      "default": "#e2e2e2",
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000",
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#fbcd0a",
+      "visible_if": "{{ section.settings.show_review_bar }}"
+    },
+    {
+      "type": "header",
+      "content": "Image marquee"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_marquee",
+      "label": "Show image marquee",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "Add images as blocks. Each block uses the picked image first, then the image URL. The images repeat automatically so the loop never shows a gap."
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Speed",
+      "info": "Pixels per second. Stays the same whatever the number of images.",
+      "min": 10,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 32,
+      "visible_if": "{{ section.settings.show_marquee }}"
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "options": [
+        { "value": "left", "label": "Right to left" },
+        { "value": "right", "label": "Left to right" }
+      ],
+      "default": "left",
+      "visible_if": "{{ section.settings.show_marquee }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": false,
+      "visible_if": "{{ section.settings.show_marquee }}"
+    },
+    {
+      "type": "range",
+      "id": "image_size_desktop",
+      "label": "Image size, desktop",
+      "min": 60,
+      "max": 260,
+      "step": 2,
+      "unit": "px",
+      "default": 122,
+      "visible_if": "{{ section.settings.show_marquee }}"
+    },
+    {
+      "type": "range",
+      "id": "image_size_mobile",
+      "label": "Image size, mobile",
+      "min": 40,
+      "max": 140,
+      "step": 1,
+      "unit": "px",
+      "default": 91,
+      "visible_if": "{{ section.settings.show_marquee }}"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Space between images",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.show_marquee }}"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.show_marquee }}"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "options": [
+        { "value": "cover", "label": "Fill (crop)" },
+        { "value": "contain", "label": "Fit (no crop)" }
+      ],
+      "default": "cover",
+      "visible_if": "{{ section.settings.show_marquee }}"
+    },
+    {
+      "type": "color",
+      "id": "image_bg",
+      "label": "Image background",
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.show_marquee }}"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Square image works best, at least 260 x 260 px."
+        },
+        {
+          "type": "text",
+          "id": "image_url",
+          "label": "Image URL",
+          "info": "Used only when no image is picked. Full Shopify Files URL."
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt text",
+          "info": "Leave empty for decorative images."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ACC Marquee Section",
+      "blocks": [
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_01.png?v=1779790558" } },
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_02.png?v=1779790558" } },
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_03.png?v=1779790558" } },
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_04.png?v=1779785886" } },
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_05.png?v=1779790558" } },
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_06.png?v=1779790558" } },
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_07.png?v=1779790558" } },
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_08.png?v=1779790558" } },
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_09.png?v=1779785886" } },
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_10.png?v=1779790558" } },
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_11.png?v=1779790558" } },
+        { "type": "image", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Collection_21_V2_image_12.png?v=1779790558" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

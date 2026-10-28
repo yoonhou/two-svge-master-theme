@@ -1,0 +1,106 @@
+{%- if section.settings.show_section -%}
+  <div id="section-{{ section.id }}">
+    {%- comment -%}
+    We have an integration with our app SuperFields to allow merchant to pull different collection footer info. We try first to pull it from the metafields
+    and if none, we get it from the general settings.
+    {%- endcomment -%}
+
+    <div class="FlexboxIeFix">
+      {%- if collection.metafields.sf_collection_footer.enabled == 1 -%}
+        {%- assign title = collection.metafields.sf_collection_footer.title -%}
+        {%- assign content = collection.metafields.sf_collection_footer.content -%}
+      {%- else -%}
+        {%- assign title = section.settings.title -%}
+        {%- assign content = section.settings.content -%}
+      {%- endif -%}
+
+      <div class="ImageHero ImageHero--small" {% if collection.metafields.sf_collection_footer.enabled == 1 and collection.metafields.sf_collection_footer.image != blank %}style="background: url({{ collection.metafields.sf_collection_footer.image }})"{% elsif section.settings.image %}style="background: url({{ section.settings.image | image_url: width: 20 }})"{% endif %}>
+        <div class="ImageHero__ImageWrapper Image--nativeBg Image--zoomOut Image--lazyLoaded {% if section.settings.apply_overlay %}Image--contrast{% endif %}"
+             {% if collection.metafields.sf_collection_footer.enabled == 1 and collection.metafields.sf_collection_footer.image != blank %}
+               style="--mobile-bg: url({{ collection.metafields.sf_collection_footer.image }}); --desktop-bg: url({{ collection.metafields.sf_collection_footer.image }});"
+             {% elsif section.settings.image %}
+               style="--mobile-bg: url({{ section.settings.image | image_url: width: 750 }}); --desktop-bg: url({{ section.settings.image | image_url: width: 1500 }});"
+             {% endif %}>
+          {%- unless section.settings.image != blank -%}
+            <div class="PlaceholderBackground PlaceholderBackground--Dark">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'PlaceholderBackground__Svg' }}
+            </div>
+          {%- endunless -%}
+        </div>
+
+        <noscript>
+          <div class="ImageHero__ImageWrapper {% if section.settings.apply_overlay %}Image--contrast{% endif %}" style="background-image: url({{ section.settings.image | image_url: width: 1000 }})"></div>
+        </noscript>
+
+        {%- if title != blank or content != blank -%}
+          <div class="ImageHero__ContentOverlay">
+            <header class="SectionHeader">
+              {%- if title != blank -%}
+                <h2 class="SectionHeader__Heading Heading u-h1">{{ title | escape }}</h2>
+              {%- endif -%}
+
+              {%- if content != blank -%}
+                <div class="SectionHeader__Description">
+                  {{- content -}}
+                </div>
+              {%- endif -%}
+            </header>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #section-{{ section.id }},
+    #section-{{ section.id }} .Heading {
+      color: {% if collection.metafields.sf_collection_footer.enabled == 1 %}{{ collection.metafields.sf_collection_footer.text_color }}{% else %}{{ section.settings.text_color }}{% endif %};
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection footer",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_section",
+      "label": "Show section",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1500 x 500px .jpg recommended"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "apply_overlay",
+      "label": "Apply overlay on image",
+      "info": "This can improve text visibility.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Our story"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Text",
+      "default": "<p>Add your own custom content to explain your processes...</p>",
+      "info": "For best results, keep this text short."
+    }
+  ]
+}
+{% endschema %}

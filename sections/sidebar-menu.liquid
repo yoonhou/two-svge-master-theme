@@ -1,0 +1,606 @@
+{%- assign main_menu_handle = section.settings.primary_menu | default: 'main-menu' -%}
+{%- assign main_menu = linklists[main_menu_handle] -%}
+
+<section id="sidebar-menu" class="SidebarMenu Drawer Drawer--small Drawer--fromLeft{% if section.settings.enable_mobile_style %} SidebarMenu--redesign{% endif %}" aria-hidden="true" data-section-id="{{ section.id }}" data-section-type="sidebar-menu">
+    <header class="Drawer__Header" data-drawer-animated-left>
+      <button class="Drawer__Close Icon-Wrapper--clickable" data-action="close-drawer" data-drawer-id="sidebar-menu" aria-label="{{ 'header.navigation.close_sidebar' | t }}">
+        {%- render 'icon' with 'close' -%}
+      </button>
+    </header>
+
+    <div class="Drawer__Content">
+      <div class="Drawer__Main" data-drawer-animated-left data-scrollable>
+        {%- if section.settings.enable_mobile_style -%}
+          {%- liquid
+            assign review_image = section.settings.review_image
+            assign review_text = section.settings.review_text
+            assign star_count = section.settings.star_count
+          -%}
+          {%- if review_image != blank or review_text != blank or star_count > 0 -%}
+            <div class="SidebarMenu__Review">
+              {%- if review_image != blank -%}
+                {{ review_image | image_url: width: 1200 | image_tag: class: 'SidebarMenu__ReviewImage', widths: '375, 550, 750, 1100', sizes: '100vw', loading: 'lazy', alt: review_image.alt }}
+              {%- else -%}
+                <img class="SidebarMenu__ReviewImage" src="https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Menu_29_001.webp?v=1782716919" alt="" width="1200" height="800" loading="lazy">
+              {%- endif -%}
+              {%- if star_count > 0 or review_text != blank -%}
+                <div class="SidebarMenu__ReviewText">
+                  {%- if star_count > 0 -%}
+                    <div class="SidebarMenu__ReviewStars" aria-hidden="true">
+                      {%- for i in (1..star_count) -%}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11" fill="none" focusable="false">
+                          <path d="M11 4.27459C11 4.11121 10.8783 4.00723 10.6348 3.96267L7.30469 3.45023L5.82227 0.331017C5.73633 0.152776 5.62891 0.0636559 5.5 0.0636559C5.37109 0.0636559 5.26367 0.152776 5.17773 0.331017L3.69531 3.45023L0.365234 3.96267C0.121745 4.00723 0 4.11121 0 4.27459C0 4.37857 0.0572917 4.48997 0.171875 4.60879L2.57812 7.03732L1.99805 10.4685C1.99805 10.5279 1.99805 10.5724 1.99805 10.6021C1.99805 10.6913 2.01953 10.7692 2.0625 10.8361C2.10547 10.9029 2.17708 10.9363 2.27734 10.9363C2.34896 10.9363 2.4349 10.9066 2.53516 10.8472L5.5 9.24305L8.46484 10.8472C8.5651 10.9066 8.65104 10.9363 8.72266 10.9363C8.82292 10.9363 8.89453 10.9029 8.9375 10.8361C8.98047 10.7692 9.00195 10.6913 9.00195 10.6021C9.00195 10.5427 9.00195 10.4982 9.00195 10.4685L8.42188 7.03732L10.8281 4.60879C10.9427 4.48997 11 4.37857 11 4.27459Z" fill="currentColor"/>
+                        </svg>
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+                  {%- if review_text != blank -%}
+                    <span>{{ review_text | escape }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+        <div class="Drawer__Container">
+          <nav class="SidebarMenu__Nav SidebarMenu__Nav--primary" aria-label="{{ 'header.navigation.sidebar_title' | t }}">
+            {%- for link in main_menu.links -%}
+              <div class="Collapsible">
+                {%- if link.links != blank -%}
+                  <button class="Collapsible__Button Heading u-h6" data-action="toggle-collapsible" {% if link.links != blank %}aria-expanded="false"{% endif %}>
+                    {{- link.title | escape -}} <span class="Collapsible__Plus"></span>
+                  </button>
+
+                  <div class="Collapsible__Inner">
+                    <div class="Collapsible__Content">
+                      {%- for sub_link in link.links -%}
+                        <div class="Collapsible">
+                          {%- if sub_link.links != blank -%}
+                            <button class="Collapsible__Button Heading Text--subdued Link--primary u-h7" data-action="toggle-collapsible" {% if sub_link.links != blank %}aria-expanded="false"{% endif %}>
+                              {{- sub_link.title | escape -}} <span class="Collapsible__Plus"></span>
+                            </button>
+
+                            <div class="Collapsible__Inner">
+                              <div class="Collapsible__Content">
+                                <ul class="Linklist Linklist--bordered Linklist--spacingLoose">
+                                  {%- for sub_sub_link in sub_link.links -%}
+                                    <li class="Linklist__Item">
+                                      <a href="{{ sub_sub_link.url }}" class="Text--subdued Link Link--primary">{{ sub_sub_link.title | escape }}</a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              </div>
+                            </div>
+                          {%- else -%}
+                            <a href="{{ sub_link.url }}" class="Collapsible__Button Heading Text--subdued Link Link--primary u-h7">{{ sub_link.title | escape }}</a>
+                          {%- endif -%}
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- else -%}
+                  <a href="{{ link.url }}" class="Collapsible__Button Heading Link Link--primary u-h6">{{ link.title | escape }}</a>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </nav>
+
+          {%- assign secondary_menu = linklists[section.settings.secondary_menu] -%}
+
+          <nav class="SidebarMenu__Nav SidebarMenu__Nav--secondary">
+            <ul class="Linklist Linklist--spacingLoose">
+              {%- for link in secondary_menu.links -%}
+                <li class="Linklist__Item">
+                  <a href="{{ link.url }}" class="Text--subdued Link Link--primary">{{ link.title | escape }}</a>
+                </li>
+              {%- endfor -%}
+
+              {%- comment -%}We automatically add some links to the secondary menu{%- endcomment -%}
+
+              {%- if shop.customer_accounts_enabled -%}
+                <li class="Linklist__Item">
+                  <a href="{{ routes.account_url }}" class="Text--subdued Link Link--primary">{{ 'header.navigation.account' | t }}</a>
+                </li>
+              {%- endif -%}
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      {%- if section.settings.show_social_media -%}
+        {%- capture social_media -%}
+          {% render 'social-media', class: 'SidebarMenu__Social', spacing: 'fill' %}
+        {%- endcapture -%}
+      {%- endif -%}
+
+      {%- if social_media != blank -%}
+        <aside class="Drawer__Footer" data-drawer-animated-bottom>
+          {%- if social_media != blank -%}
+            {{ social_media }}
+          {%- endif -%}
+        </aside>
+      {%- endif -%}
+    </div>
+</section>
+
+{% style %}
+  #sidebar-menu.SidebarMenu--redesign {
+    --sm-bg: {{ section.settings.menu_background }};
+    --sm-text: {{ section.settings.menu_text }};
+    --sm-sub: {{ section.settings.submenu_text }};
+    --sm-star: {{ section.settings.star_color }};
+    --sm-fs: {{ section.settings.menu_font_size }}px;
+    --sm-ls: {{ section.settings.menu_letter_spacing }}px;
+    --sm-min-h: {{ section.settings.menu_item_min_height }}px;
+    --sm-review-fs: {{ section.settings.review_font_size }}px;
+    --sm-review-ls: {{ section.settings.review_letter_spacing }}px;
+    --sm-img-min: {{ section.settings.review_image_min_height }}px;
+    --sm-line: {{ section.settings.menu_text | color_modify: 'alpha', 0.5 }};
+  }
+{% endstyle %}
+
+{% stylesheet %}
+  .SidebarMenu__Review {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    #sidebar-menu.SidebarMenu--redesign {
+      width: 100%;
+      background: var(--sm-bg);
+      color: var(--sm-text);
+      transform: translateX(-100%);
+    }
+
+    #sidebar-menu.SidebarMenu--redesign[aria-hidden='false'] {
+      transform: translateX(0);
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Drawer__Header {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      width: 44px;
+      height: 44px;
+      z-index: 9;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Drawer__Header .Drawer__Close {
+      position: static;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--sm-text);
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Drawer__Close svg {
+      width: 15px!important;
+      height: 15px!important;
+      stroke-width: 1.25px!important; 
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Drawer__Content {
+      max-height: none;
+      height: 100%;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Drawer__Content::before,
+    #sidebar-menu.SidebarMenu--redesign .Drawer__Main::after,
+    #sidebar-menu.SidebarMenu--redesign .Drawer__Footer::before {
+      content: none;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__Review {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__ReviewImage {
+      width: 100%;
+      height: auto;
+      min-height: var(--sm-img-min);
+      object-fit: cover;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__ReviewText {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      align-self: stretch;
+      padding: 0 18px;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__ReviewStars {
+      display: flex;
+      padding: 3px 0;
+      align-items: center;
+      gap: 2px;
+      color: var(--sm-star);
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__ReviewStars svg {
+      width: 11px;
+      height: 11px;
+      display: block;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__ReviewText span {
+      color: var(--sm-text);
+      font-family: var(--heading-font-family);
+      font-size: var(--sm-review-fs);
+      font-weight: 500;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: var(--sm-review-ls);
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Drawer__Container {
+      display: flex;
+      padding: 16px 18px 24px;
+      flex-direction: column;
+      align-items: flex-start;
+      align-self: stretch;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__Nav--primary {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      align-self: stretch;
+      width: 100%;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__Nav--secondary {
+      margin: 0;
+      width: 100%;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__Nav--secondary .Linklist {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      width: 100%;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__Nav--secondary .Linklist__Item {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin: 0;
+      padding: 12px 16px;
+      border: none;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__Nav--secondary .Linklist__Item > .Link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      min-height: var(--sm-min-h);
+      padding: 0;
+      color: var(--sm-text);
+      font-family: var(--heading-font-family);
+      font-size: var(--sm-fs);
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      letter-spacing: var(--sm-ls);
+      text-transform: uppercase;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Inner .Linklist--bordered {
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Inner .Linklist {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 64px;
+      width: 100%;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Inner .Linklist__Item {
+      width: 100%;
+      margin: 0;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Inner .Linklist__Item > .Link {
+      display: block;
+      width: 100%;
+      padding: 0;
+      color: var(--sm-sub);
+      font-family: var(--heading-font-family);
+      font-size: var(--sm-fs);
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      letter-spacing: var(--sm-ls);
+      text-transform: uppercase;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__Nav--primary > .Collapsible {
+      display: flex;
+      padding: 12px 16px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      align-self: stretch;
+      width: 100%;
+      border: none;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__Nav--primary > .Collapsible > .Collapsible__Button {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      align-self: stretch;
+      width: 100%;
+      flex: 1 0 auto;
+      color: var(--sm-text);
+      font-family: var(--heading-font-family);
+      font-size: var(--sm-fs);
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      letter-spacing: var(--sm-ls);
+      text-transform: uppercase;
+      padding: 0;
+      min-height: var(--sm-min-h);
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__Nav--primary > .Collapsible > .Collapsible__Button::after,
+    #sidebar-menu.SidebarMenu--redesign .SidebarMenu__Nav--secondary .Linklist__Item > .Link::after,
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Inner button.Collapsible__Button::after {
+      content: '';
+      width: 16px;
+      height: 16px;
+      flex: none;
+      background-color: currentColor;
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M11.1102 8.67359H2.99542V7.34046H11.1097L7.5341 3.76438L8.47691 2.82158L13.6624 8.00702L8.47691 13.1925L7.5341 12.2497L11.1102 8.67359Z' fill='black'/%3E%3C/svg%3E");
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M11.1102 8.67359H2.99542V7.34046H11.1097L7.5341 3.76438L8.47691 2.82158L13.6624 8.00702L8.47691 13.1925L7.5341 12.2497L11.1102 8.67359Z' fill='black'/%3E%3C/svg%3E");
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-position: center;
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Button[aria-expanded='true']::after {
+      transform: rotate(-90deg);
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Plus {
+      display: none;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Inner button.Collapsible__Button {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Inner a::after {
+      content: none;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Button + .Collapsible__Inner .Collapsible__Content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 64px;
+      align-self: stretch;
+      margin-top: 12px;
+      padding: 36px 16px 24px 0;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Button + .Collapsible__Inner .Collapsible__Content > .Collapsible {
+      margin-left: 0;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Collapsible__Button + .Collapsible__Inner .Collapsible__Content > .Collapsible a.Collapsible__Button {
+      padding: 0;
+      color: var(--sm-sub);
+      font-family: var(--heading-font-family);
+      font-size: var(--sm-fs);
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      letter-spacing: var(--sm-ls);
+      text-transform: uppercase;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Drawer__Footer {
+      box-shadow: none;
+      min-height: 0;
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Drawer__Footer .SidebarMenu__Social {
+      display: flex;
+      width: 100%;
+      padding: 15px 44px;
+      justify-content: space-between;
+      align-items: center;
+      align-self: stretch;
+      border-top: 1px solid var(--sm-line);
+    }
+
+    #sidebar-menu.SidebarMenu--redesign .Drawer__Footer .SidebarMenu__Social > li {
+      margin: 0;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Sidebar menu",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "primary_menu",
+      "label": "Primary menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "secondary_menu",
+      "label": "Secondary menu",
+      "info": "This menu won't show dropdown items."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_media",
+      "label": "Show social media",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mobile menu style"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mobile_style",
+      "label": "Redesigned mobile menu",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "menu_background",
+      "label": "Background",
+      "default": "#1A1A1A",
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "color",
+      "id": "menu_text",
+      "label": "Menu text",
+      "default": "#FFFFFF",
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "color",
+      "id": "submenu_text",
+      "label": "Submenu text",
+      "default": "#BFBFBF",
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "range",
+      "id": "menu_font_size",
+      "label": "Menu font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14,
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "range",
+      "id": "menu_letter_spacing",
+      "label": "Menu letter spacing",
+      "min": 0,
+      "max": 4,
+      "step": 0.1,
+      "unit": "px",
+      "default": 2.8,
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "range",
+      "id": "menu_item_min_height",
+      "label": "Menu item height",
+      "min": 44,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 72,
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "header",
+      "content": "Review banner",
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "review_image",
+      "label": "Image",
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },    
+    {
+      "type": "range",
+      "id": "review_image_min_height",
+      "label": "Image height",
+      "min": 120,
+      "max": 480,
+      "step": 8,
+      "unit": "px",
+      "default": 240,
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "text",
+      "id": "review_text",
+      "label": "Text",
+      "default": "40,000+ FIVE-STAR REVIEWS",
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "range",
+      "id": "review_font_size",
+      "label": "Text size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12,
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "range",
+      "id": "review_letter_spacing",
+      "label": "Text letter spacing",
+      "min": 0,
+      "max": 4,
+      "step": 0.1,
+      "unit": "px",
+      "default": 2,
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "range",
+      "id": "star_count",
+      "label": "Stars",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 5,
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#FBCD0A",
+      "visible_if": "{{ section.settings.enable_mobile_style }}"
+    }
+  ]
+}
+{% endschema %}

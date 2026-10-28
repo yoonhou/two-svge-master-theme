@@ -1,0 +1,36 @@
+{% assign product_name = product.title | split: ' - ' | first %}
+{% for collection in product.collections %}
+  {% if product_name == collection.title %}
+    <div class="cw-color-swatches-container"{% if block != blank %} {{ block.shopify_attributes }}{% endif %}>
+      <div class="cw-color-swatches-heading">Other options:</div>
+      <div class="cw-color-swatches-slider">
+        {% for product_color in collection.products %}
+          <!-- {{ product_color.tags | json }} -->
+          <!--
+            <button
+              class="cw-color-swatch {% if product.id == product_color.id %}swatch-selected{% endif %}"
+              hx-target="#shopify-section-product-template"
+              hx-replace-url="{{ product_color.url }}"
+              hx-get="{{ product_color.url }}?view=short"
+              hx-swap="outerHTML"
+              {% if product_color.tags contains "WHAT'S HOT_Best Sellers" %}data-best-seller{% endif %}
+            >
+
+              <img src="{{ product_color.featured_image | image_url: height: 100 }}" alt="{{ product_color.title }}" width="{{ product_color.featured_image.width }}" height="{{ product_color.featured_image.height }}">
+            </button>
+          -->
+          {% assign pn = product_name | append: ' - ' %}
+          {% if product_color.title contains pn %}
+            <a
+              class="cw-color-swatch {% if product.id == product_color.id %}swatch-selected{% endif %}"
+              href="{{ product_color.url }}"
+            >
+              <img src="{{ product_color.featured_image | image_url: height: 100 }}" alt="{{ product_color.title }}" width="{{ product_color.featured_image.width }}" height="{{ product_color.featured_image.height }}">
+            </a>
+          {% endif %}
+        {% endfor %}
+        <div class="cw-color-swatch-spacer"></div>
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}

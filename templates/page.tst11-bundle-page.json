@@ -1,0 +1,76 @@
+{
+  "sections": {
+    "main": {
+      "type": "bundle-page",
+      "blocks": {
+        "gallery_slide_1": {
+          "type": "gallery_slide",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/3-Pack_bundle.jpg?v=1718797229",
+            "image_width": "1400",
+            "image_height": "1400",
+            "alt": "3-Pack bundle",
+            "thumbnail_image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/3-Pack_bundle_160x.jpg?v=1718797229",
+            "thumbnail_width": "160",
+            "thumbnail_height": "160",
+            "thumbnail_alt": "Bundles"
+          }
+        },
+        "gallery_slide_2": {
+          "type": "gallery_slide",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/icon-midnight-unisex-sunglasses_1400x.jpg?v=1702864394",
+            "image_width": "1400",
+            "image_height": "1400",
+            "alt": "Icon Midnight sunglasses",
+            "thumbnail_image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/icon-midnight-unisex-sunglasses_160x.jpg?v=1702864394",
+            "thumbnail_width": "160",
+            "thumbnail_height": "160",
+            "thumbnail_alt": "ICON - BLACK"
+          }
+        },
+        "gallery_slide_3": {
+          "type": "gallery_slide",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/products/intent-safety-black-unisex_1400x.jpg?v=1675744886",
+            "image_width": "1400",
+            "image_height": "1400",
+            "alt": "Intent Safety Black",
+            "thumbnail_image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/products/intent-safety-black-unisex_160x.jpg?v=1675744886",
+            "thumbnail_width": "160",
+            "thumbnail_height": "160",
+            "thumbnail_alt": "ICON - BLACK"
+          }
+        },
+        "gallery_slide_4": {
+          "type": "gallery_slide",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/icon-safety-fyre-unisex_1200x.jpg?v=1706778526",
+            "image_width": "1200",
+            "image_height": "1200",
+            "alt": "Icon Safety Fyre",
+            "thumbnail_image_url": "https://cdn.shopify.com/s/files/1/0083/8441/3756/files/icon-safety-fyre-unisex_160x.jpg?v=1706778526",
+            "thumbnail_width": "160",
+            "thumbnail_height": "160",
+            "thumbnail_alt": "ICON - BLACK"
+          }
+        },
+        "tab_xnXE3p": {
+          "type": "tab",
+          "settings": { "title": "All", "collection": "sunglasses" }
+        },
+        "tab_DAGUqD": {
+          "type": "tab",
+          "settings": { "title": "Best Sellers", "collection": "best-sellers" }
+        },
+        "tab_dgBiL8": {
+          "type": "tab",
+          "settings": { "title": "Safety Eyewear", "collection": "safety-eyewear" }
+        }
+      },
+      "block_order": ["gallery_slide_1", "gallery_slide_2", "gallery_slide_3", "gallery_slide_4", "tab_xnXE3p", "tab_DAGUqD", "tab_dgBiL8"],
+      "settings": { "discount_code": "2GMPND9R0M21" }
+    }
+  },
+  "order": ["main"]
+}

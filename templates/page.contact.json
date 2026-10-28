@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "page-contact-template",
+      "blocks": {
+        "phone": {
+          "type": "text",
+          "settings": {
+            "title": "Your phone (optional)"
+          }
+        }
+      },
+      "block_order": ["phone"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

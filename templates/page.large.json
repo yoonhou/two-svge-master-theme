@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "page-large-template",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

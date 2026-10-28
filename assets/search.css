@@ -1,0 +1,73 @@
+.SearchFilters {
+    max-width: 1200px;
+    margin: -10px auto 50px;
+    padding: 0 24px;
+}
+
+.SearchFilters__Form {
+    display: grid;
+    gap: 28px;
+}
+
+.SearchFilters__FilterLabel {
+    display: block;
+    position: relative;
+    cursor: pointer;
+}
+
+.SearchFilters__FilterInput {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.SearchFilters__FilterInput:disabled + span {
+    opacity: 0.45;
+}
+
+.SearchFilters__PriceRange {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.SearchFilters__PriceField {
+    display: block;
+}
+
+.SearchFilters__PriceField span {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.SearchFilters__PriceInput {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--border-color);
+    background: var(--background);
+}
+
+.SearchFilters__Actions {
+    display: flex;
+    gap: 12px;
+}
+
+.SearchFilters__Actions .Button {
+    flex: 1 1 0;
+}
+
+@media screen and (min-width: 1008px) {
+    .SearchFilters__Form {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        align-items: start;
+    }
+
+    .SearchFilters__Actions {
+        grid-column: 1 / -1;
+        justify-content: center;
+    }
+
+    .SearchFilters__Actions .Button {
+        flex: 0 1 240px;
+    }
+}

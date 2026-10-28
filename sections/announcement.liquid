@@ -1,0 +1,146 @@
+{%- liquid
+  assign text = section.settings.content | escape
+  if section.settings.market_specific_text == true
+  assign current_market_handle = localization.market.handle | downcase
+
+  case current_market_handle
+    when 'au'
+     assign text = section.settings.content | escape 
+
+    when 'ca'
+     assign text = section.settings.content_ca | escape 
+    
+    when 'us'
+     assign text = section.settings.content_us | escape 
+
+    when 'nz'
+     assign text = section.settings.content_nz | escape 
+
+    when 'gb'
+     assign text = section.settings.content_gb | escape 
+
+    when 'international'
+     assign text = section.settings.content_international | escape
+
+    else 
+    assign text = section.settings.content | escape
+  endcase
+  endif
+
+-%}
+
+
+{%- if section.settings.enable_bar -%}
+  {%- unless section.settings.home_page_only and template != 'index' -%}
+    <section id="section-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="announcement-bar">
+      <div class="AnnouncementBar">
+        <div class="AnnouncementBar__Wrapper">
+          <p class="AnnouncementBar__Content Heading">
+            {%- if section.settings.link -%}
+              <a href="{{ section.settings.link }}">{{ text }}</a>
+            {%- else -%}
+              {{ text }}
+            {%- endif -%}
+          </p>
+          <a style="display: none;" href="/pages/bundle" class="AnnouncementBar__Content Heading">CHOOSE ANY 3 PAIRS AND SAVE 20%</a>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      #section-{{ section.id }} {
+        background: {{ section.settings.background }};
+        color: {{ section.settings.text_color }};
+      }
+    </style>
+
+    <script>
+      document.documentElement.style.setProperty('--announcement-bar-height', document.getElementById('shopify-section-announcement').offsetHeight + 'px');
+    </script>
+  {%- endunless -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_bar",
+      "label": "Enable bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "home_page_only",
+      "label": "Home page only",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "content",
+      "label": "Text",
+      "default": "Announce something here"
+    },
+    {
+      "type": "checkbox",
+      "id": "market_specific_text",
+      "label": "Market-specific text",
+      "info":"AU will always use the default text above",
+      "default": false
+    },
+    {
+      "type":"text",
+      "id":"content_ca",
+      "label":"Canada Text",
+      "default":"FREE SHIPPING ON ORDERS OVER $100",
+      "visible_if": "{{ section.settings.market_specific_text == true }}"
+    },
+    {
+      "type":"text",
+      "id":"content_nz",
+      "label":"New Zealand Text",
+      "default":"FREE SHIPPING ON ORDERS OVER $125",
+       "visible_if": "{{ section.settings.market_specific_text == true }}"
+    },
+    {
+      "type":"text",
+      "id":"content_gb",
+      "label":"United Kingdom Text",
+      "default":"FREE SHIPPING ON ORDERS OVER £70",
+       "visible_if": "{{ section.settings.market_specific_text == true }}"
+    },
+    {
+      "type":"text",
+      "id":"content_us",
+      "label":"United States Text",
+      "default":"FREE SHIPPING ON ORDERS OVER $80",
+       "visible_if": "{{ section.settings.market_specific_text == true }}"
+    },
+    {
+      "type":"text",
+      "id":"content_international",
+      "label":"International",
+      "default":"FREE SHIPPING ON ORDERS OVER $100 AUD",
+       "visible_if": "{{ section.settings.market_specific_text == true }}"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ]
+}
+{% endschema %}

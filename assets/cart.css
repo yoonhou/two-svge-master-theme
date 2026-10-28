@@ -1,0 +1,569 @@
+  html .two_svg_11.popup-div {
+  border: 2px solid black;
+  width: 100%;
+  min-width: 398px;
+  margin: 20px 0px 0px 0px;
+  max-height: 125px;
+  max-width: 400px;
+  margin-left: auto !important;
+}
+.continue_shopping_button{
+    max-width: 400px;
+    width: 100%;
+}
+
+html .two_svg_11.popup-div .popup-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
+  max-height: 125px;
+  margin: 0;
+  cursor: pointer;
+}
+
+html .two_svg_11.popup-div .popup-img {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  max-width: 106px;
+  min-width: 80px;
+  max-height: 122px;
+  width: 100%;
+  padding: 8px;
+}
+
+html .two_svg_11.popup-div .popup-img img {
+  max-width: 106px;
+  width: 100%;
+}
+
+html .two_svg_11.popup-div .popup-text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  padding: 0;
+}
+
+html .two_svg_11.popup-div .popup-text .text1 {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 19.5px;
+  text-align: left;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+html .two_svg_11.popup-div .popup-text .text2 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 17.07px;
+  text-align: left;
+  color: #6c6c6c;
+}
+
+html .two_svg_11.popup-div .popup-save {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  max-width: 77px;
+  max-height: 121px;
+  width: 100%;
+  grid-gap: 10px;
+  gap: 10px;
+  background: #000000;
+  padding: 0px 0px 0px 2px;
+}
+
+html .two_svg_11.popup-div .popup-save .save {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  max-width: 61px;
+  max-height: 36px;
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19.5px;
+  text-align: left;
+  background: #edcb54;
+  color: black;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+html .two_svg_11.popup-div .popup-save .save-text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  max-width: 61px;
+  max-height: 34px;
+  width: 100%;
+  font-size: 27.79px;
+  font-weight: 700;
+  line-height: 33.88px;
+  text-align: left;
+  background: #000000;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1140px) {
+  html .two_svg_11.popup-div {
+    border: 2px solid black;
+    width: 100%;
+    min-width: 373px;
+    margin: 20px 0px 0px 0px;
+    max-height: 122px;
+  }
+  .continue_shopping_button{
+    min-width: 373px;
+  }
+}
+
+@media (max-width: 1008px) {
+  html .two_svg_11.popup-div {
+    border: 2px solid black;
+    width: 100%;
+    max-width: 498px;
+    margin: 20px 0px 0px 0px;
+    max-height: 122px;
+    margin-left: auto;
+  }
+  .continue_shopping_button{
+    max-width: 498px;
+  }
+  html .two_svg_11.popup-div .popup-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    width: 100%;
+    max-height: 122px;
+    margin: 0;
+  }
+  html .two_svg_11.popup-div .popup-img {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    max-width: 106px !important;
+    width: 100%;
+  }
+  html .two_svg_11.popup-div .popup-text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 100%;
+  }
+  html .two_svg_11.popup-div .popup-text .text1 {
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 19.5px;
+    text-align: left;
+    text-transform: uppercase;
+    color: #000000;
+  }
+  html .two_svg_11.popup-div .popup-text .text2 {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 17.07px;
+    text-align: left;
+    color: #6c6c6c;
+  }
+  html .two_svg_11.popup-div .popup-save {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    max-width: 120px;
+    min-width: 77px;
+    max-height: 121px;
+    width: 100%;
+    grid-gap: 10px;
+    gap: 10px;
+    background: #000000;
+    padding: 0px 0px 0px 2px;
+  }
+  html .two_svg_11.popup-div .popup-save .save {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    max-width: 90px;
+    min-width: 61px;
+    max-height: 36px;
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19.5px;
+    text-align: left;
+    background: #edcb54;
+    color: black;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  html .two_svg_11.popup-div .popup-save .save-text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    max-width: 90px;
+    min-width: 61px;
+    max-height: 34px;
+    width: 100%;
+    font-size: 27.79px;
+    font-weight: 700;
+    line-height: 33.88px;
+    text-align: left;
+    background: #000000;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+}
+
+@media (max-width: 421px) {
+  html .two_svg_11.popup-div {
+    border: 2px solid black;
+    width: 100%;
+    max-width: 498px;
+    min-width: 300px;
+    margin: 20px 0px 0px 0px;
+    max-height: 99px;
+  }
+  .continue_shopping_button{
+    min-width: 300px;
+    max-width: 498px;
+  }
+  html .two_svg_11.popup-div .popup-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    width: 100%;
+    max-height: 99px;
+    margin: 0;
+  }
+  html .two_svg_11.popup-div .popup-img {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    max-width: 99px !important;
+    width: 100%;
+    padding: 6px 8px;
+  }
+  html .two_svg_11.popup-div .popup-img img {
+    max-width: 83px;
+    max-height: 83px;
+    width: 100%;
+  }
+  html .two_svg_11.popup-div .popup-text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 100%;
+  }
+  html .two_svg_11.popup-div .popup-text .text1 {
+    font-size: 14px !important;
+    font-weight: bold;
+    line-height: 19.5px;
+    text-align: left;
+    text-transform: uppercase;
+    color: #000000;
+  }
+  html .two_svg_11.popup-div .popup-text .text2 {
+    font-size: 12px !important;
+    font-weight: 500;
+    line-height: 17.07px;
+    text-align: left;
+    color: #6c6c6c;
+  }
+  html .two_svg_11.popup-div .popup-save {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    max-width: 76px;
+    max-height: 95px !important;
+    width: 100%;
+    grid-gap: 10px;
+    gap: 10px;
+    background: #000000;
+    padding: 0px 0px 0px 2px;
+  }
+  html .two_svg_11.popup-div .popup-save .save {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    max-width: 61px;
+    max-height: 36px;
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19.5px;
+    text-align: left;
+    background: #edcb54;
+    color: black;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  html .two_svg_11.popup-div .popup-save .save-text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    max-width: 61px;
+    max-height: 34px;
+    width: 100%;
+    font-size: 27.79px;
+    font-weight: 700;
+    line-height: 33.88px;
+    text-align: left;
+    background: #000000;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+}
+
+@media (max-width: 451px) {
+  html .two_svg_11.popup-div .popup-text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 100%;
+  }
+  html .two_svg_11.popup-div .popup-text .text1 {
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 19.5px;
+    text-align: left;
+    text-transform: uppercase;
+    color: #000000;
+  }
+  html .two_svg_11.popup-div .popup-text .text2 {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 17.07px;
+    text-align: left;
+    color: #6c6c6c;
+  }
+}
+
+@media (max-width: 676px) {
+  html .two_svg_11.popup-div .popup-save {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    max-width: 77px;
+    max-height: 121px;
+    width: 100%;
+    grid-gap: 10px;
+    gap: 10px;
+    background: #000000;
+    padding: 0px 0px 0px 2px;
+  }
+  html .two_svg_11.popup-div .popup-save .save {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    max-width: 61px;
+    max-height: 36px;
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19.5px;
+    text-align: left;
+    background: #edcb54;
+    color: black;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  html .two_svg_11.popup-div .popup-save .save-text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    max-width: 61px;
+    max-height: 34px;
+    width: 100%;
+    font-size: 27.79px;
+    font-weight: 700;
+    line-height: 33.88px;
+    text-align: left;
+    background: #000000;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+}
+.jdgm-prev-badge__text{
+  visibility: visible !important;
+}
+
+a.xlr8d-product-03_bundle {
+max-width: 400px;
+float: right;
+width:100%;
+}
+.bundle-cart-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}

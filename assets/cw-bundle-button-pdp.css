@@ -1,0 +1,405 @@
+.two_svg_11.popup-div {
+    border: 2px solid black;
+    width: 100%;
+    min-width: 398px;
+    margin: 20px 0px 0px 0px;
+    max-height: 125px;
+}
+
+.two_svg_11.popup-div .popup-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-height: 125px;
+    margin: 8px 0px 8px 8px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.two_svg_11.popup-div .popup-img{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    max-width: 106px;
+    min-width: 80px;
+    max-height: 122px;
+    width: 100%;
+    padding: 8px;
+}
+
+.two_svg_11.popup-div .popup-img img{
+    max-width: 106px;
+    width: 100%;
+}
+
+.two_svg_11.popup-div .popup-text{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    padding: 0;
+}
+
+.two_svg_11.popup-div .popup-text .text1{
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 19.5px;
+    text-align: left;
+    text-transform: uppercase;
+    color: #000000;
+}
+
+.two_svg_11.popup-div .popup-text .text2{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17.07px;
+    text-align: left;
+    color: #6C6C6C;
+}
+
+.two_svg_11.popup-div .popup-save{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 77px;
+    max-height: 121px;
+    width: 100%;
+    padding: 22.5px 8px;
+    gap: 10px;
+    background: #000000;
+    padding: 0px 0px 0px 2px;
+}
+
+.two_svg_11.popup-div .popup-save .save{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 61px;
+    max-height: 36px;
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19.5px;
+    text-align: left;
+    background: #EDCB54;
+    color: black;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.two_svg_11.popup-div .popup-save .save-text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 61px;
+    max-height: 34px;
+    width: 100%;
+    font-size: 27.79px;
+    font-weight: 700;
+    line-height: 33.88px;
+    text-align: left;
+    background: #000000;
+    color: #FFFFFF;
+    text-transform: uppercase;
+}
+
+@media (max-width: 1140px) {
+    .two_svg_11.popup-div {
+        border: 2px solid black;
+        width: 100%;
+        min-width: 373px;
+        margin: 20px 0px 0px 0px;
+        max-height: 122px;
+    }
+}
+
+@media (max-width: 1008px) {
+    .two_svg_11.popup-div {
+        border: 2px solid black;
+        width: 100%;
+        max-width: 498px;
+        margin: 20px 0px 0px 0px;
+        max-height: 122px;
+    }
+
+    .two_svg_11.popup-div .popup-wrapper{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        max-height: 122px;
+        margin: 8px 0px 8px 8px;
+        margin: 0;
+    }
+
+    .two_svg_11.popup-div .popup-img{
+        display: flex;
+        align-items: center;
+        max-width: 106px !important;
+        width: 100%;
+    }
+
+    .two_svg_11.popup-div .popup-text{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .two_svg_11.popup-div .popup-text .text1{
+        font-size: 19px;
+        font-weight: bold;
+        line-height: 19.5px;
+        text-align: left;
+        text-transform: uppercase;
+        color: #000000;
+    }
+
+    .two_svg_11.popup-div .popup-text .text2{
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 17.07px;
+        text-align: left;
+        color: #6C6C6C;
+    }
+
+    .two_svg_11.popup-div .popup-save{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 120px;
+        min-width: 77px;
+        max-height: 121px;
+        width: 100%;
+        padding: 22.5px 8px;
+        gap: 10px;
+        background: #000000;
+        padding: 0px 0px 0px 2px;
+    }
+
+    .two_svg_11.popup-div .popup-save .save{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 90px;
+        min-width: 61px;
+        max-height: 36px;
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 19.5px;
+        text-align: left;
+        background: #EDCB54;
+        color: black;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .two_svg_11.popup-div .popup-save .save-text{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 90px;
+        min-width: 61px;
+        max-height: 34px;
+        width: 100%;
+        font-size: 27.79px;
+        font-weight: 700;
+        line-height: 33.88px;
+        text-align: left;
+        background: #000000;
+        color: #FFFFFF;
+        text-transform: uppercase;
+    }
+}
+
+@media (max-width: 421px) {
+    .two_svg_11.popup-div {
+        border: 2px solid black;
+        width: 100%;
+        max-width: 498px;
+        min-width: 300px;
+        margin: 20px 0px 0px 0px;
+        max-height: 99px;
+    }
+
+    .two_svg_11.popup-div .popup-wrapper{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        max-height: 99px;
+        margin: 0;
+    }
+
+    .two_svg_11.popup-div .popup-img{
+        display: flex;
+        align-items: center;
+        max-width: 99px !important;
+        width: 100%;
+        padding: 6px 8px;
+    }
+
+    .two_svg_11.popup-div .popup-img img{
+        max-width: 83px;
+        max-height: 83px;
+        width: 100%;
+    }
+
+    .two_svg_11.popup-div .popup-text{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .two_svg_11.popup-div .popup-text .text1{
+        font-size: 14px !important;
+        font-weight: bold;
+        line-height: 19.5px;
+        text-align: left;
+        text-transform: uppercase;
+        color: #000000;
+    }
+
+    .two_svg_11.popup-div .popup-text .text2{
+
+        font-size: 12px !important;
+        font-weight: 500;
+        line-height: 17.07px;
+        text-align: left;
+        color: #6C6C6C;
+    }
+
+    .two_svg_11.popup-div .popup-save{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 76px;
+        max-height: 95px !important;
+        width: 100%;
+        gap: 10px;
+        background: #000000;
+        padding: 0px 0px 0px 2px;
+    }
+
+    .two_svg_11.popup-div .popup-save .save{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 61px;
+        max-height: 36px;
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 19.5px;
+        text-align: left;
+        background: #EDCB54;
+        color: black;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .two_svg_11.popup-div .popup-save .save-text{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 61px;
+        max-height: 34px;
+        width: 100%;
+        font-size: 27.79px;
+        font-weight: 700;
+        line-height: 33.88px;
+        text-align: left;
+        background: #000000;
+        color: #FFFFFF;
+        text-transform: uppercase;
+    }
+}
+
+@media (max-width: 451px) {
+    .two_svg_11.popup-div .popup-text{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .two_svg_11.popup-div .popup-text .text1{
+        font-size: 17px;
+        font-weight: bold;
+        line-height: 19.5px;
+        text-align: left;
+        text-transform: uppercase;
+        color: #000000;
+    }
+
+    .two_svg_11.popup-div .popup-text .text2{
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 17.07px;
+        text-align: left;
+        color: #6C6C6C;
+    }
+}
+
+@media (max-width: 676px) {
+    .two_svg_11.popup-div .popup-save{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 77px;
+        max-height: 121px;
+        width: 100%;
+        padding: 22.5px 8px;
+        gap: 10px;
+        background: #000000;
+        padding: 0px 0px 0px 2px;
+    }
+
+    .two_svg_11.popup-div .popup-save .save{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 61px;
+        max-height: 36px;
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 19.5px;
+        text-align: left;
+        background: #EDCB54;
+        color: black;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .two_svg_11.popup-div .popup-save .save-text{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 61px;
+        max-height: 34px;
+        width: 100%;
+        font-size: 27.79px;
+        font-weight: 700;
+        line-height: 33.88px;
+        text-align: left;
+        background: #000000;
+        color: #FFFFFF;
+        text-transform: uppercase;
+    }
+}

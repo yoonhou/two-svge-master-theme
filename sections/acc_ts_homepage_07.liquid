@@ -1,0 +1,189 @@
+
+{%- style -%}
+:root {
+--acc-ts-homepage-07-text-color: {{ section.settings.text_color }};
+--acc-ts-homepage-07-border-color: {{ section.settings.border_color }};
+--acc-ts-homepage-07-gap: {{ section.settings.gap | append:"px" }};
+--acc-ts-homepage-07-gap-mobile: {{ section.settings.gap | divided_by:2 | append:"px" }};
+}
+.section-{{ section.id }}-padding {
+padding-top: {{ section.settings.padding_top }}px;
+padding-bottom: {{ section.settings.padding_bottom }}px;
+}
+{%- endstyle -%}
+
+{{ 'acc_ts_homepage_07.css' | asset_url | stylesheet_tag }}
+<div class="ACC_TS_Homepage_07 section-{{ section.id }}-padding">
+<div class="ACC_TS_Homepage_07_main_wrapper">
+{%- if section.settings.title != blank -%}
+<div class="ACC_TS_Homepage_07_section_title">{{ section.settings.title }}</div>
+{%- endif -%}
+
+{%- if section.settings.subtitle != blank -%}
+<div class="ACC_TS_Homepage_07_section_subtitle">{{ section.settings.subtitle }}</div>
+{%- endif -%}
+
+<div class="ACC_TS_Homepage_07_section_content_outer">
+<div class="ACC_TS_Homepage_07_section_content">
+{%- for block in section.blocks -%}
+<a href="{{ block.settings.link | default: '#' }}" class="ACC_TS_Homepage_07_card" {{ block.shopify_attributes }}>
+{%- if block.settings.image != blank -%}
+<img
+src="{{ block.settings.image | image_url: width: 880 }}"
+alt="{{ block.settings.image.alt | default: block.settings.card_title | escape }}"
+class="ACC_TS_Homepage_07_card_image"
+loading="lazy"
+width="{{ block.settings.image.width }}"
+height="{{ block.settings.image.height }}"
+>
+{%- endif -%}
+<div class="ACC_TS_Homepage_07_card_description">
+{%- if block.settings.card_title != blank -%}
+<div class="ACC_TS_Homepage_07_card_title">{{ block.settings.card_title }}</div>
+{%- endif -%}
+{%- if block.settings.problem != blank -%}
+<div class="ACC_TS_Homepage_07_card_problem"><span>Problem:</span> {{ block.settings.problem }}</div>
+{%- endif -%}
+{%- if block.settings.solution != blank -%}
+<div class="ACC_TS_Homepage_07_card_solution"><span>Solution:</span> {{ block.settings.solution }}</div>
+{%- endif -%}
+</div>
+</a>
+{%- endfor -%}
+</div>
+</div>
+</div>
+</div>
+
+{% schema %}
+{
+"name": "Why Us Cards",
+"settings": [
+{
+"type": "text",
+"id": "title",
+"label": "Section title",
+"default": "Why TWO SVGE?"
+},
+{
+"type": "text",
+"id": "subtitle",
+"label": "Section subtitle",
+"default": "Looks better. Lasts longer. Costs less."
+},
+{
+"type": "color",
+"id": "text_color",
+"label": "Text color",
+"default": "#131313"
+},
+{
+"type": "color",
+"id": "border_color",
+"label": "Border color",
+"default": "#F2F2F2"
+},
+{
+"type": "range",
+"id": "padding_top",
+"min": 0,
+"max": 100,
+"step": 1,
+"unit": "px",
+"label": "Padding top",
+"default": 15
+},
+{
+"type": "range",
+"id": "padding_bottom",
+"min": 0,
+"max": 100,
+"step": 1,
+"unit": "px",
+"label": "Padding bottom",
+"default": 15
+},
+{
+"type": "range",
+"id": "gap",
+"min": 0,
+"max": 100,
+"step": 1,
+"unit": "px",
+"label": "Gap",
+"default": 70
+}
+],
+"blocks": [
+{
+"type": "card",
+"name": "Card",
+"settings": [
+
+{
+"type": "image_picker",
+"id": "image",
+"label": "Image"
+},
+{
+"type": "text",
+"id": "card_title",
+"label": "Title",
+"default": "STYLE"
+},
+{
+"type": "textarea",
+"id": "problem",
+"label": "Problem",
+"default": "Most sunglasses look safe and forgettable."
+},
+{
+"type": "textarea",
+"id": "solution",
+"label": "Solution",
+"default": "Built to stand out. Bold, iconic and instantly recognisable the second you put them on."
+},
+{
+"type": "url",
+"id": "link",
+"label": "Card link"
+}
+]
+}
+],
+"presets": [
+{
+"name": "Why Us Cards",
+"blocks": [
+{
+"type": "card",
+"settings": {
+"card_title": "STYLE",
+"problem": "Most sunglasses look safe and forgettable.",
+"solution": "Built to stand out. Bold, iconic and instantly recognisable the second you put them on.",
+"link": "/collections/sunglasses"
+}
+},
+{
+"type": "card",
+"settings": {
+"card_title": "DURABILITY",
+"problem": "Looks good… until they don’t.",
+"solution": "Our frames are built for real use, from job sites to weekends, without sacrificing style.",
+"link": "/collections/sunglasses"
+}
+},
+{
+"type": "card",
+"settings": {
+"card_title": "VALUE",
+"problem": "Paying $200+ for a logo.",
+"solution": "Premium look and feel without the markup. You can grab multiple pairs without overpaying for a name.",
+"link": "/collections/sunglasses"
+}
+}
+]
+}
+]
+}
+{% endschema %}

@@ -1,0 +1,94 @@
+{% if template contains 'product' %}
+<style>
+    
+.inview_sticky {
+display: none !important;
+}
+@media only screen and (min-width: 1000px) {
+.sticky-btn-wrapper button {
+    max-width: 400px !important;
+}
+
+.sticky-btn-wrapper { 
+justify-content:center !important;
+}
+}
+.sticky-btn-wrapper {
+    background: #fff !important;
+    width: 100%;
+    padding: 15px 20px;
+    box-shadow: 0px -5px 25px 0px #00000026;
+    border-top: 1px solid #00000026;
+    bottom: 0 !important;
+}
+.sticky-btn-wrapper {
+    width: 100% !important;
+}
+
+
+.pr_pricing {
+    margin-right: 20px;
+    font-weight: 700;
+}
+
+.sticky-btn-wrapper {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
+
+.sticky-btn-wrapper button {
+    /* font-weight: 700; */
+}
+.sticky-show {
+display:flex !important;
+}
+
+
+.sticky-show2 {
+bottom:90px !important;
+}
+</style>
+  
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const checkVisibility = () => {
+        const target = document.querySelector('.Product .ProductForm .ProductForm__AddToCart');
+ 
+        if (target) {
+        const stickyBtnWrapper = document.querySelector('.sticky-btn-wrapper');
+        const windowHeight = window.innerHeight;
+        const scrollPos = window.scrollY;
+        const elementTop = target.getBoundingClientRect().top + scrollPos;
+        const elementBottom = elementTop + target.offsetHeight;
+
+        if ((elementTop <= scrollPos + windowHeight) && (elementBottom >= scrollPos)) {
+            stickyBtnWrapper.classList.add('inview_sticky');
+          
+        } else {
+            stickyBtnWrapper.classList.remove('inview_sticky');
+         
+        }
+    }
+    };
+
+    window.addEventListener('scroll', checkVisibility);
+    checkVisibility();
+
+});
+</script>
+
+
+{% endif %}
+
+{% if template.name contains 'collection' %}
+
+<style>
+.CollectionToolbar {
+    display: none !important;
+}
+</style>
+
+{% endif %}

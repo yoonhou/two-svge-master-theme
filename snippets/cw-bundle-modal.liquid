@@ -1,0 +1,204 @@
+{{ 'cw-bundle-modal.css' | asset_url | stylesheet_tag }}
+<script>
+  window.cw_market_money_format = {{ shop.money_format | json }};
+  window.cw_pdp_bundle_modal_discount_code = {{ section.settings.discount_code | json }};
+  window.cw_min_collection_product_price = {{ collections['all'].products | map: 'price_min' | sort | first | default: 0 | json }};
+</script>
+<div id="cw-bundle-modal" class="two_svg">
+    <div class="ProductMeta__choose-pairs" data-bundle-open>
+        <div class="ProusctMeta_center">
+            <img src="https://cdn.shopify.com/s/files/1/0083/8441/3756/files/big-bundle_selector_example_6_1.png?v=1718173849" width="112" height="42" alt="Bundle selector example">
+            <button>CHOOSE 3 PAIRS</button>
+        </div>
+    </div>
+
+    <div id="selectedProductsList" hidden></div>
+
+    <button
+            disabled
+            type="submit"
+            data-use-primary-button="true"
+            class="ProductForm__AddToCart Button Button--primary Button--full"
+            data-bundle-add-to-cart
+    >
+        <span>Add to cart</span>
+    </button>
+
+    <div
+            id="popup"
+            class="popup"
+            data-bundle-popup
+            aria-hidden="true"
+            aria-labelledby="bundle-modal-title"
+            aria-modal="true"
+            role="dialog"
+            tabindex="-1"
+    >
+        <div class="backdrop" data-bundle-close></div>
+        <div class="popup-content">
+            <div class="first-popup">
+                <div class="first-popup-text">
+                    <div class="tittle-text">
+                        <div class="text1-first" id="bundle-modal-title">Choose 3 pairs</div>
+                        <div class="text2-first">Select 3 pairs of your choice and SAVE 20%</div>
+                    </div>
+
+                    <div class="close_btn" data-bundle-close role="button" tabindex="0" aria-label="Close bundle selector"><span id="closePopupBtn" class="close"></span></div>
+                </div>
+
+                <div class="products-tabs">
+                    {% for block in section.blocks %}
+                        {% case block.type %}
+                            {% when 'tab' %}
+                                <div
+                                        class="product-tab"
+                                        data-bundle-tab="{{ block.settings.collection.handle }}"
+                                        role="button"
+                                        tabindex="0"
+                                >
+                                    {{ block.settings.title | escape }}
+                                </div>
+                        {% endcase %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="second-popup">
+                {% for block in section.blocks %}
+                    {% case block.type %}
+                        {% when 'tab' %}
+                            <div
+                                    class="products-second products"
+                                    data-collection="{{ block.settings.collection.handle }}"
+                            >
+                            {% assign rendered = 0 %}
+                            {% assign unavailable = 0 %}
+                                {% paginate block.settings.collection.products by 100 %}
+                              <!-- size: {{ block.settings.collection.products | size }} -->
+                                    {% for product in block.settings.collection.products %}
+                                      {% comment %}
+                                        {% if product.handle contains 'chain' %}
+                                            {% assign skiped = skiped | plus: 1 %}
+                                            {% continue %}
+                                        {% endif %}
+                                        {% endcomment %}
+                                        {% if product.first_available_variant.id != blank %}
+                                            {% assign rendered = rendered | plus: 1 %}
+                                            <div
+                                                    data-variant="{{ product.first_available_variant.id }}"
+                                                    data-product-handle="{{ product.handle }}"
+                                                    data-bundle-product
+                                                    data-product-id="{{ product.id }}"
+                                                    data-product-title="{{ product.title | escape }}"
+                                                    data-product-image="{{ product.featured_image | image_url: height: 150 }}"
+                                                    data-product-reviews="{{ product.metafields.reviews.rating_count | default: 0 }}"
+                                                    data-product-rating="{{ product.metafields.reviews.rating.value | default: 0 }}"
+                                                    class="product"
+                                            >
+                                                <div class="product-img">
+                                                    <img src="{{ product.featured_image | image_url: height: 250 }}" alt="{{ product.title | escape }}" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}">
+                                                </div>
+                                                <span class="tittle-product">{{ product.title | escape }}</span>
+                                                {% if product.variants.size > 1 %}
+                                                <div class="product-variants">
+                                                    <select name="variant" data-bundle-variant-select aria-label="{{ product.title | escape }} variant">
+                                                        {% for variant in product.variants %}
+                                                        <option value="{{ variant.id }}" data-price="{{ variant.price }}" data-title="{{ variant.title | escape }}" {% unless variant.available %}disabled{% endunless %} {% if variant.id == product.first_available_variant.id %}selected{% endif %}>{{ variant.title | escape }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                {% else %}
+                                                  <input type="hidden" name="variant" value="{{ product.first_available_variant.id }}" data-price="{{ product.first_available_variant.price }}" data-title="{{ product.first_available_variant.title | escape }}">
+                                                {% endif %}
+                                                <span class="stars-reviews">
+                                                  <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+                                                    {{ product.metafields.judgeme.badge }}
+                                                  </div>
+                                                </span>
+                                                <span class="price-product">
+                                                    <s>{{ product.price | money_without_trailing_zeros }}</s>&nbsp;<span>{{- product.price | times: 0.8 | money_without_trailing_zeros -}}</span>
+                                                </span>
+                                                <div
+                                                        class="add-product"
+                                                        data-bundle-select
+                                                        role="button"
+                                                        tabindex="0"
+                                                        aria-label="Add {{ product.title | escape }} to bundle"
+                                                >
+                                                    <svg
+                                                            width="36"
+                                                            height="36"
+                                                            viewBox="0 0 36 36"
+                                                            fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path d="M18 2.25C13.8385 2.30049 9.86172 3.97608 6.9189 6.9189C3.97608 9.86172 2.30049 13.8385 2.25 18C2.30049 22.1615 3.97608 26.1383 6.9189 29.0811C9.86172 32.0239 13.8385 33.6995 18 33.75C22.1615 33.6995 26.1383 32.0239 29.0811 29.0811C32.0239 26.1383 33.6995 22.1615 33.75 18C33.6995 13.8385 32.0239 9.86172 29.0811 6.9189C26.1383 3.97608 22.1615 2.30049 18 2.25ZM27 19.125H19.125V27H16.875V19.125H9V16.875H16.875V9H19.125V16.875H27V19.125Z" fill="black"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="add-product-active" data-bundle-selected-controls hidden>
+                                                    <svg data-bundle-unselect role="button" tabindex="0" aria-label="Remove {{ product.title | escape }} from bundle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="36" height="36" viewBox="0 0 1080 1080" xml:space="preserve">
+                                                        <defs>
+                                                        </defs>
+                                                        <g transform="matrix(1 0 0 1 540 540)" id="de66173a-08b3-4679-88b9-3b390e39581b"  >
+                                                            <rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke"  x="-540" y="-540" rx="0" ry="0" width="1080" height="1080" />
+                                                        </g>
+                                                        <g transform="matrix(1 0 0 1 540 540)" id="a10b5857-0f51-4ca8-92c2-bb566f05b40d"  >
+                                                        </g>
+                                                        <g transform="matrix(30 0 0 30 540 540)"  >
+                                                            <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  transform=" translate(-18, -18)" d="M 18 2.25 C 13.8385 2.30049 9.86172 3.97608 6.9189 6.9189 C 3.97608 9.86172 2.30049 13.8385 2.25 18 C 2.30049 22.1615 3.97608 26.1383 6.9189 29.0811 C 9.86172 32.0239 13.8385 33.6995 18 33.75 C 22.1615 33.6995 26.1383 32.0239 29.0811 29.0811 C 32.0239 26.1383 33.6995 22.1615 33.75 18 C 33.6995 13.8385 32.0239 9.86172 29.0811 6.9189 C 26.1383 3.97608 22.1615 2.30049 18 2.25 Z M 27 19.125 L 19.125 19.125 L 19.125 27 L 16.875 27 L 16.875 19.125 L 9 19.125 L 9 16.875 L 16.875 16.875 L 16.875 9 L 19.125 9 L 19.125 16.875 L 27 16.875 L 27 19.125 Z" stroke-linecap="round" />
+                                                        </g>
+                                                        <g transform="matrix(1.56 0 0 3.76 540 381.99)" id="db7b1750-6f42-4ae2-83fd-03483ea26203"  >
+                                                            <rect style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  x="-33.0835" y="-33.0835" rx="0" ry="0" width="66.167" height="66.167" />
+                                                        </g>
+                                                        <g transform="matrix(1.56 0 0 3.76 540 698.1)" id="db7b1750-6f42-4ae2-83fd-03483ea26203"  >
+                                                            <rect style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  x="-33.085" y="-33.085" rx="0" ry="0" width="66.17" height="66.17" />
+                                                        </g>
+                                                    </svg>
+                                                    <span data-bundle-selected-count>0</span>
+                                                    <svg
+                                                            data-bundle-select
+                                                            role="button"
+                                                            tabindex="0"
+                                                            aria-label="Add another {{ product.title | escape }} to bundle"
+                                                            width="36"
+                                                            height="36"
+                                                            viewBox="0 0 36 36"
+                                                            fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path d="M18 2.25C13.8385 2.30049 9.86172 3.97608 6.9189 6.9189C3.97608 9.86172 2.30049 13.8385 2.25 18C2.30049 22.1615 3.97608 26.1383 6.9189 29.0811C9.86172 32.0239 13.8385 33.6995 18 33.75C22.1615 33.6995 26.1383 32.0239 29.0811 29.0811C32.0239 26.1383 33.6995 22.1615 33.75 18C33.6995 13.8385 32.0239 9.86172 29.0811 6.9189C26.1383 3.97608 22.1615 2.30049 18 2.25ZM27 19.125H19.125V27H16.875V19.125H9V16.875H16.875V9H19.125V16.875H27V19.125Z" fill="black"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <!-- {{ product.id }} {{ product.title }}-->
+                                          {% assign unavailable = unavailable | plus: 1 %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endpaginate %}
+                                                          <!-- skiped: {{ skiped }} -->
+                                                          <!-- unavailable: {{ unavailable }} -->
+                                                          <!-- rendered: {{ rendered }} -->
+                            </div>
+                    {% endcase %}
+                {% endfor %}
+            </div>
+            <div class="third-popup">
+                <div class="items-third">
+                    <div class="items1">
+                        <span class="item1" data-bundle-clear role="button" tabindex="0"> clear all </span>
+                    </div>
+                    <div class="items2">
+                        <span class="item2" data-bundle-selected-total>0/3 selected</span>
+                        <div class="save-div Button Button--primary" data-bundle-save disabled="true" role="button" tabindex="0">
+                            <span> save </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="{{ 'cw-bundle-modal.js' | asset_url }}" defer></script>

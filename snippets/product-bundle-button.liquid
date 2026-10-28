@@ -1,0 +1,20 @@
+{% if section.settings.show_bundle_button %}
+  <div class="popup-div two_svg_11 implm"{% if block != blank %} {{ block.shopify_attributes }}{% endif %}>
+          <a href="/pages/bundle">
+              <div class="popup-wrapper">
+                  <div class="popup-img">
+                      <img src="{{ section.settings.bundle_button_image | image_url: width: 300, height: 300 }}" alt="3 Pack Bundle" width="{{ section.settings.bundle_button_image.width | default: 300 }}" height="{{ section.settings.bundle_button_image.height | default: 300 }}">
+                  </div>
+                  <div class="popup-text">
+                      <span class="text1">{{ section.settings.bundle_title }}</span>
+                      <span class="text2">{{ section.settings.bundle_subtitle }}</span>
+                  </div>
+                  <div class="popup-save">
+                      <span class="save">{{ section.settings.bundle_discount_prefix }}</span>
+                      <span class="save-text">{{ section.settings.bundle_discount_value }}</span>
+                  </div>
+              </div>
+          </a>
+  </div>
+  {{ 'cw-bundle-button-pdp.css' | asset_url | stylesheet_tag }}
+{% endif %}

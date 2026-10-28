@@ -1,0 +1,51 @@
+.cw-color-swatches-container {
+    margin-right: -24px;
+}
+.cw-color-swatches-heading {
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Montserrat';
+    line-height: 16px;
+    margin-bottom: 11px;
+}
+.cw-color-swatches-slider {
+    margin-bottom: 25px;
+}
+.cw-color-swatch {
+    margin-right: 4px;
+    background: #F3F3F3;
+    border: 1px solid #D7D7D7;
+    width: 63px;
+    height: 63px;
+    order: 1;
+}
+
+.cw-color-swatch[data-best-seller] {
+  order: 0;
+}
+.cw-color-swatch.swatch-selected {
+    border-color: black;
+}
+.cw-color-swatch-spacer {
+    width: 20px;
+    order: 2;
+}
+.cw-color-swatch img {
+    min-width: 100%;
+    min-height: 100%;
+    mix-blend-mode: multiply;
+}
+
+@media (min-width: 768px) {
+    .cw-color-swatches-slider {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+    .cw-color-swatch {
+        margin-right: 0;
+    }
+  .cw-color-swatch-spacer {
+    display: none;
+  }
+}

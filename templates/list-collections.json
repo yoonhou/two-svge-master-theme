@@ -1,0 +1,95 @@
+{
+  "sections": {
+    "main": {
+      "type": "list-collections-template",
+      "blocks": {
+        "80e77903-76ba-4aa1-b877-118d06d367ea": {
+          "type": "collection",
+          "settings": {
+            "collection": "sunglasses",
+            "image_alignment": "center center",
+            "content_position": "bottomCenter",
+            "subheading": "",
+            "title": "SUNGLASSES",
+            "button_text": "SHOP NOW"
+          }
+        },
+        "collection_eraNk7": {
+          "type": "collection",
+          "settings": {
+            "collection": "best-sellers",
+            "image_alignment": "center center",
+            "content_position": "bottomCenter",
+            "subheading": "",
+            "title": "BEST SELLERS",
+            "button_text": "SHOP NOW"
+          }
+        },
+        "collection_4x4qDm": {
+          "type": "collection",
+          "settings": {
+            "collection": "safety-eyewear",
+            "image_alignment": "center center",
+            "content_position": "bottomCenter",
+            "subheading": "",
+            "title": "SAFETY EYEWEAR",
+            "button_text": "SHOP NOW"
+          }
+        },
+        "collection_UBYNWt": {
+          "type": "collection",
+          "settings": {
+            "collection": "new-releases",
+            "image": "shopify://shop_images/legacy_gold_web-32.jpg",
+            "image_alignment": "center center",
+            "content_position": "bottomCenter",
+            "subheading": "",
+            "title": "NEW RELEASES",
+            "button_text": "SHOP NOW"
+          }
+        },
+        "8f68f72e-aa98-4796-80e7-59279ddd6e37": {
+          "type": "collection",
+          "settings": {
+            "collection": "blue-light",
+            "image_alignment": "center center",
+            "content_position": "bottomCenter",
+            "subheading": "",
+            "title": "BLUE LIGHT",
+            "button_text": "SHOP NOW"
+          }
+        },
+        "collection_X99pTX": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories",
+            "image": "shopify://shop_images/defender_case_1.jpg",
+            "image_alignment": "center center",
+            "content_position": "bottomCenter",
+            "subheading": "",
+            "title": "ACCESSORIES",
+            "button_text": "View products"
+          }
+        }
+      },
+      "block_order": [
+        "80e77903-76ba-4aa1-b877-118d06d367ea",
+        "collection_eraNk7",
+        "collection_4x4qDm",
+        "collection_UBYNWt",
+        "8f68f72e-aa98-4796-80e7-59279ddd6e37",
+        "collection_X99pTX"
+      ],
+      "settings": {
+        "collections_to_show": "selected",
+        "image_size": "normal",
+        "add_spacing": true,
+        "expand_collection": false,
+        "apply_overlay": true,
+        "text_color": "#ffffff",
+        "button_color": "#363636"
+      }
+    }
+  },
+  "order": ["main"]
+}

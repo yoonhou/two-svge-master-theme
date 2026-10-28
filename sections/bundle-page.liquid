@@ -1,0 +1,771 @@
+
+
+<style>
+  section.Product {
+    display: flex;
+    margin-top: 60px;
+  }
+  section.Product .Product__Wrapper {
+    width: 100%;
+  }
+  section.Product .Product__InfoWrapper {
+    position: static;
+    
+  }
+  section.Product .Product__InfoWrapper:has(.popup.opened)
+  {
+  z-index:9;
+  }
+
+  @media(max-width: 1007px) {
+    section.Product {
+      flex-direction: column;
+    }
+  }
+  
+  .after-payment{
+      display: flex;
+      align-items: center;
+  }
+  .afterpay-main-text{
+      font-family: 'Nunito Sans';
+  }
+  .ProductMeta__choose-pairs{
+      border: 1px solid #DCDCDC;
+      padding: 50px 100px;
+      text-align: center;
+      margin-bottom: 30px;
+      cursor: pointer;
+  }
+  .ProductMeta__choose-pairs button {
+      border: 1px solid #000000;
+      padding: 8px 24px;
+      border-radius: 100px;
+      font-family: 'Montserrat';
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 12.19px;
+      letter-spacing: 2.4000000953674316px;
+      text-align: center;
+  }
+
+  .ProusctMeta_center img{
+      margin-bottom: 24px;
+  }
+
+  .ProductMeta__product-popup h3 {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 29.26px;
+      letter-spacing: 2.4000000953674316px;
+      font-family: 'Montserrat';
+      color: #000000;
+  }
+  .ProductMeta__product-popup p {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 19.5px;
+      color: #000000;
+  }
+
+
+  .ProductMeta__product-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      width: 100%;
+      margin: 0 auto;
+      background: #F8F8F8;
+      margin: 0;
+      padding: 2rem;
+  }
+  .item__link{
+      border: 1px solid #EDEDED;
+      padding: 10px;
+      background: white;
+      margin-bottom: 16px;
+  }
+  .ProductMeta__product-popup{
+      padding: 2rem;
+  }
+  .fancybox__content {
+      padding: 0rem !important;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      display: block !important;
+  }
+  .imagecontainer img {
+      width: 166px;
+      height: 166px;
+  }
+  .text-end {
+      text-align: end;
+  }
+
+
+  .fancybox__content>.f-button.is-close-btn {
+      opacity: 1;
+      color: black;
+      width: 32px;
+      height: 32px;
+      background: #F1F1F1;
+      padding: 6.69px;
+      gap: 0px;
+      border-radius: 100px;
+      top: 10px !important;
+      right: 10px !important;
+  }
+
+
+  .product-save{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem;
+  }
+  /* .product-save p{
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 19.5px;
+      color: #000000;
+      text-decoration: underline;
+      margin: 0px;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 19.5px;
+      text-align: left;
+  } */
+  .product-save__item{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .product-save button {
+      background: #000;
+      color: white;
+      padding: 15px;
+      width: 188px;
+      margin-left: 40px;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 19.5px;
+  }
+  .Item__title {
+      color: #131313;
+      font-family: 'Montserrat';
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 21px;
+      letter-spacing: 3.5999999046325684px;
+
+  }
+  .item__link {
+      display: block;
+      margin-bottom: 20px;
+      border: 1px solid transparent;
+      transition: border 0.3s;
+      position: relative;
+  }
+
+  .item__link.selected {
+      border: 2px solid black;
+  }
+
+  .item__link.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+  }
+
+  .item__link.disabled::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 1;
+  }
+
+  #selectedCount {
+      margin-top: 20px;
+      font-size: 18px;
+  }
+
+  #clearAll {
+      font-family: 'Montserrat';
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 17.07px;
+      text-decoration: underline;
+      text-align: left;
+      margin-top: 10px;
+      padding: 5px 10px;
+      cursor: pointer;
+      color: #000000;
+      display: none; /* Initially hidden */
+  }
+
+  .product-item-remove {
+      display: none; /* Initially hidden */
+  }
+
+  .product-item-add {
+      display: block; /* Initially shown */
+  }
+
+  .item__link.selected .product-item-add {
+      display: none; /* Hide when selected */
+  }
+
+  .item__link.selected .product-item-remove {
+      display: block; /* Show when selected */
+  }
+
+  .product-item-remove svg{
+      font-weight: bold;
+      position: relative;
+      top: 13px;
+  }
+  .product-item-remove p{
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 14.63px;
+      font-family: "Montserrat";
+      display: inline;
+  }
+  .ProductMeta__Selected-item{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #EDEDED;
+      margin-bottom: 8px;
+      padding: 8px;
+  }
+  .product-detail{
+      display: flex;
+      align-items: center;
+  }
+  .product-media{
+      width: 57px;
+  }
+  .product-titel{
+      margin-left: 10px;
+  }
+  /* .product-titel h2 , p {
+      font-family: "Montserrat";
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 14px;
+      text-align: left;
+  } */
+  #selectedCount {
+      font-family: 'Montserrat';
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 19.5px;
+      text-align: left;
+      color: #777777;
+
+  }
+  .selectedProductItem{
+      border: 1px solid #EDEDED;
+      padding: 10px;
+      margin-bottom: 8px;
+  }
+  .product-review {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 8px;
+  }
+  .removeProduct{
+      cursor: pointer;
+      font-family: 'Montserrat';
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 14.63px;
+      display: flex;
+      align-items: center;
+      color: #000;
+      text-align: left;
+  }
+  #saveSelection:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+  }
+  .product-title {
+      margin-left: 13px;
+  }
+  .product-title h2{
+      margin-bottom: 8px;
+      font-family: 'Montserrat';
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 21px;
+      letter-spacing: 3.5999999046325684px;
+      text-align: left;
+  }
+  .product-title p{
+      margin-bottom: 8px;
+      font-family: 'Montserrat';
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 21px;
+      letter-spacing: 3.5999999046325684px;
+      text-align: left;
+  }
+  .product-review span {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 14.4px;
+      text-align: left;
+  }
+  .ProductForm__titel{
+      display: block;
+      font-family: 'Montserrat';
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 17.07px;
+      letter-spacing: 2.4000000953674316px;
+  }
+  .sticky-btn-wrapper {
+      display: none;
+  }
+  .Product__Slides-img{
+      display: inline-block;
+      width: 70px;
+      margin: 10px;
+      vertical-align: top;
+  }
+  .Product__Slides-img.is-selected {
+      border: 1px solid black;
+  }
+  .ProusctMeta_center{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+  }
+  /* .Product__Gallery:not(.Product__Gallery--stack).Product__Gallery--withThumbnails .flickity-page-dots {
+      display: block !important;
+  } */
+
+
+  .flickity-prev-next-button svg {
+      display: block;
+      width: 15px;
+      height: 9px;
+  }
+  .flickity-prev-next-button {
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: #000;
+      cursor: pointer;
+      text-align: center;
+      z-index: 1;
+      box-shadow: initial;
+      vertical-align: middle;
+      line-height: 0;
+      transform: scale(1.001);
+      transition: background .15s ease-in-out, opacity .15s ease-in-out, transform .2s ease-in-out, color .2s ease-in-out;
+      overflow: hidden;
+  }
+  .next {
+      position: absolute;
+      right: 94px;
+      bottom: 11px;
+  }
+  .previous{
+      position: relative;
+      bottom: -12px;
+      left: 122px;
+  }
+  .flickity-prev-next-button[disabled] {
+      opacity: 1;
+  }
+  .flickity-page-dots {
+      margin:0px;
+  }
+  .jdgm-prev-badge__text {
+      visibility: unset;
+      font-size: 12px;
+      display: none;
+  }
+  .flickity-page-dots {
+      position: relative;
+      bottom: 22px;
+  }
+  .regular--price{
+      text-decoration: line-through;
+  }
+  @media screen and (min-width: 1140px) {
+      .Product__Gallery:not(.Product__Gallery--stack).Product__Gallery--withThumbnails .flickity-page-dots {
+          display: none;
+      }
+      .flickity-prev-next-button {
+          display: none;
+      }
+      .Product__SlideshowNav--thumbnails {
+          display: block;
+      }
+  }
+  @media screen and (min-width: 1008px) {
+      .Rte img, .Rte .VideoWrapper, .Rte .Form {
+          margin-top: 1em;
+          margin-bottom: 5em;
+      }
+  }
+  @media only screen and (max-width: 991px) {
+      .ProductMeta__choose-pairs {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          padding: 50px 0px;
+      }
+      .Item__price .ProductMeta__PriceList {
+          text-align: start;
+      }
+      .product-save button {
+          width: 92px;
+          margin-left: 8px;
+      }
+      .product-save {
+          padding: 1rem;
+      }
+      .ProductMeta__product-popup {
+          padding: 1rem;
+          text-align: center;
+      }
+      .fancybox__slide {
+          padding: 0px !important;
+      }
+      .ProductMeta__product-popup p {
+          width: 276px;
+          margin: 0 auto;
+      }
+
+  }
+  @media screen and (max-width: 768px) {
+      .mobile-hidden {
+          display: none !important;
+      }
+      .item__link {
+          width: 48%;
+      }
+      .ProductMeta__product-item {
+          padding: 1rem;
+      }
+      .fancybox__content {
+          width: 100%;
+      }
+      .fancybox__slide{
+          padding: 0px;
+      }
+  }
+  @media screen and (max-width: 400px) {
+      .product-title h2, .product-title p {
+          font-size: 11px;
+          line-height: 14px;
+      }
+      .product-review span {
+          font-size: 10px;
+      }
+      .removeProduct {
+          font-size: 9px;
+      }
+      .after-payment{
+          display: initial;
+      }
+      .next {
+          position: absolute;
+          right: 41px;
+      }
+      .previous{
+          position: relative;
+          left: 54px;
+      }
+  }
+</style>
+
+<section
+  class="Product Product--{{ section.settings.image_size }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="bundle-page"
+  data-section-settings="{{ section.settings | json | escape }}"
+>
+  <div class="Product__Wrapper">
+    <div class="container my-4">
+      <div class="Product__Gallery  Product__Gallery--withThumbnails">
+        <div
+          class="carousel carousel-main Product__Slideshow"
+          data-flickity='{"prevNextButtons": true ,"pageDots": true,"draggable": true,"resize": true }'
+        >
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'gallery_slide' -%}
+              {%- assign slide_image = block.settings.image -%}
+              {%- assign slide_url = block.settings.image_url -%}
+              {%- assign slide_width = block.settings.image_width | default: slide_image.width -%}
+              {%- assign slide_height = block.settings.image_height | default: slide_image.height -%}
+
+              {%- if slide_image != blank -%}
+                <img src="{{ slide_image | image_url: width: slide_image.width }}" width="{{ slide_image.width }}" height="{{ slide_image.height }}" alt="{{ block.settings.alt | escape }}" {{ block.shopify_attributes }}>
+              {%- elsif slide_url != blank -%}
+                <img src="{{ slide_url | escape }}" width="{{ slide_width }}" height="{{ slide_height }}" alt="{{ block.settings.alt | escape }}" {{ block.shopify_attributes }}>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        <div class="Product__SlideshowNav Product__SlideshowNav--thumbnails">
+          <div
+            class="carousel carousel-nav Product__SlideshowNavScroller"
+            data-flickity='{ "asNavFor": ".carousel-main", "contain": true, "pageDots": false ,"prevNextButtons": false }'
+          >
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'gallery_slide' -%}
+                {%- assign thumbnail_image = block.settings.thumbnail_image | default: block.settings.image -%}
+                {%- assign thumbnail_url = block.settings.thumbnail_image_url | default: block.settings.image_url -%}
+                {%- assign thumbnail_width = block.settings.thumbnail_width | default: thumbnail_image.width -%}
+                {%- assign thumbnail_height = block.settings.thumbnail_height | default: thumbnail_image.height -%}
+                {%- assign thumbnail_alt = block.settings.thumbnail_alt | default: block.settings.alt -%}
+
+                {%- if thumbnail_image != blank or thumbnail_url != blank -%}
+                  <div class="Product__Slides-img">
+                    {%- if thumbnail_image != blank -%}
+                      <img
+                        src="{{ thumbnail_image | image_url: width: thumbnail_image.width }}"
+                        alt="{{ thumbnail_alt | escape }}"
+                        width="{{ thumbnail_image.width }}"
+                        height="{{ thumbnail_image.height }}"
+                      >
+                    {%- else -%}
+                      <img
+                        src="{{ thumbnail_url | escape }}"
+                        alt="{{ thumbnail_alt | escape }}"
+                        width="{{ thumbnail_width }}"
+                        height="{{ thumbnail_height }}"
+                      >
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="Product__InfoWrapper">
+    <div class="Product__Info">
+      <div class="Container">
+        <div class="ProductMeta">
+          <h1 class="ProductMeta__Title Heading u-h2">3-PACK bundle</h1>
+          <div
+            style=""
+            class="jdgm-widget jdgm-preview-badge jdgm-preview-badge--with-link jdgm--done-setup"
+            data-id="6759644758198"
+            data-template="product"
+            data-auto-install="false"
+          >
+            <div
+              style="display:none"
+              class="jdgm-prev-badge"
+              data-average-rating="4.85"
+              data-number-of-reviews="1037"
+              data-number-of-questions="0"
+            >
+              <span
+                class="jdgm-prev-badge__stars"
+                data-score="4.85"
+                tabindex="0"
+                aria-label="4.85 stars"
+                role="button"
+              >
+                <span class="jdgm-star jdgm--on"></span>
+                <span class="jdgm-star jdgm--on"></span>
+                <span class="jdgm-star jdgm--on"></span>
+                <span class="jdgm-star jdgm--on"></span>
+                <span class="jdgm-star jdgm--on"></span>
+              </span>
+              <span class="jdgm-prev-badge__text">1037 reviews</span>
+            </div>
+          </div>
+        </div>
+        <div class="ProductMeta__PriceList Heading">
+          <span class="ProductMeta__Price Price Text--subdued u-h4">
+            <span class="price-from">From </span>
+            <span class="regular--price">$252</span>
+            <span class="discount--price"> $201</span>
+          </span>
+        </div>
+        <p class="afterpay-paragraph after-payment" style="opacity:0;">
+          <span class="afterpay-main-text">Make 4 interest-free payments of <strong>$50.25</strong> with </span>
+          <span class="afterpay-logo-link">
+            <button
+              onclick="document.querySelector('afterpay-modal').setAttribute('visible', 'visible')"
+              class="afterpay-logo brand-afterpay compact-badge type-badge black-on-mint"
+              aria-label="Afterpay logo - Opens a dialog"
+              title="Afterpay logo - Opens a dialog"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="xMidYMid meet"
+                width="98"
+                height="36"
+                class="compact-badge-logo"
+                viewBox="0 0 100 21"
+              >
+                <path class="afterpay-logo-badge-background" fill="#b2fce4" d="M89.85 20.92h-78.9a10.42 10.42 0 110-20.82h78.89a10.42 10.42 0 010 20.83v-.01z"></path>
+                <g class="afterpay-logo-badge-lockup">
+                   <path d="M85.05 6.37L82.88 5.1l-2.2-1.27a2.2 2.2 0 00-3.3 1.9v.29c0 .16.08.3.22.38l1.03.58c.28.16.63-.04.63-.37v-.67c0-.34.36-.54.65-.38l2.02 1.16 2 1.15c.3.16.3.58 0 .75l-2 1.15-2.02 1.16a.43.43 0 01-.65-.38v-.33a2.2 2.2 0 00-3.28-1.9l-2.2 1.26-2.19 1.25a2.2 2.2 0 000 3.8l2.18 1.25 2.2 1.27a2.2 2.2 0 003.3-1.9v-.3c0-.15-.09-.3-.23-.37L78.02 14a.43.43 0 00-.64.37v.67c0 .34-.36.54-.65.38l-2-1.16-2-1.15a.43.43 0 010-.75l2-1.15 2-1.16c.3-.16.65.05.65.38v.33a2.2 2.2 0 003.3 1.9l2.2-1.26 2.17-1.25a2.2 2.2 0 000-3.8z"></path>
+                   <path d="M70.77 6.78l-5.1 10.53h-2.12l1.91-3.93-3-6.6h2.17l1.93 4.42 2.1-4.42h2.11z"></path>
+                   <path d="M19.8 10.5c0-1.24-.92-2.12-2.04-2.12s-2.03.9-2.03 2.14c0 1.23.91 2.14 2.03 2.14s2.03-.88 2.03-2.14m.02 3.74v-.97a3 3 0 01-2.36 1.09c-2.05 0-3.6-1.65-3.6-3.86 0-2.2 1.61-3.87 3.65-3.87.95 0 1.76.42 2.31 1.08v-.95h1.84v7.48h-1.84z"></path>
+                   <path d="M30.6 12.6c-.65 0-.84-.24-.84-.87V8.4h1.2V6.78h-1.2V4.96h-1.88v1.82h-2.43v-.74c0-.63.24-.87.9-.87h.42V3.72h-.9c-1.56 0-2.3.5-2.3 2.07v1h-1.04V8.4h1.04v5.85h1.88V8.4h2.43v3.66c0 1.53.6 2.19 2.11 2.19h.97V12.6h-.37z"></path>
+                   <path d="M37.35 9.85c-.13-.97-.93-1.56-1.86-1.56-.92 0-1.7.57-1.88 1.56h3.74zM33.6 11c.13 1.1.93 1.74 1.93 1.74.8 0 1.4-.37 1.76-.97h1.94c-.45 1.58-1.87 2.6-3.74 2.6a3.68 3.68 0 01-3.85-3.85 3.78 3.78 0 013.9-3.9 3.74 3.74 0 013.8 4.38H33.6z"></path>
+                   <path d="M51.35 10.5c0-1.2-.9-2.12-2.03-2.12-1.12 0-2.03.9-2.03 2.14 0 1.23.9 2.14 2.03 2.14 1.12 0 2.03-.93 2.03-2.14m-5.92 6.79V6.78h1.84v.97a2.97 2.97 0 012.36-1.1c2.02 0 3.6 1.65 3.6 3.85s-1.6 3.87-3.65 3.87a2.9 2.9 0 01-2.26-1v3.93h-1.9.01z"></path>
+                   <path d="M59.86 10.5c0-1.24-.9-2.12-2.03-2.12-1.12 0-2.04.9-2.04 2.14 0 1.23.92 2.14 2.04 2.14s2.03-.88 2.03-2.14m.02 3.74v-.97a3 3 0 01-2.36 1.09c-2.05 0-3.6-1.65-3.6-3.86 0-2.2 1.61-3.87 3.64-3.87.96 0 1.76.42 2.32 1.08v-.95h1.84v7.48h-1.84z"></path>
+                   <path d="M42.11 7.5s.47-.86 1.62-.86c.5 0 .8.17.8.17v1.9s-.69-.42-1.32-.33c-.64.09-1.04.67-1.04 1.45v4.42h-1.9V6.78h1.84v.73z"></path>
+                </g>
+              </svg>
+            </button>
+            <button
+              id="logo-link"
+              class="afterpay-link"
+              tabindex="0"
+              aria-label="Learn More about Afterpay - Opens a dialog"
+              title="Learn More about Afterpay - Opens a dialog"
+            >
+              <template style="text-decoration: none; display: inline-block;"></template>
+            </button>
+          </span>
+        </p>
+        <h2 class="ProductForm__titel" style="display: none;">YOUR SELECTION</h2>
+
+        {% render 'cw-bundle-modal', section: section %}
+
+        <div>
+          <div class="Rte">
+            <div style="text-align: center;">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0083/8441/3756/files/BADGE_03_1024x1024.jpg?v=1647995215"
+                style="float: none;"
+                width="1024"
+                height="167"
+                alt="Satisfaction guarantee badge"
+              >
+            </div>
+            <div style="text-align: center;"></div>
+            <div>
+              <span>
+                Get more bang for your buck with our exclusive bundle offer! Choose any 3 pairs from our badass
+                collection of safety eyewear and sunglasses, and save 20%. Whether you’re tearing up the road, kicking
+                back at the campsite, or on the job, we’ve got the perfect shades for you.
+                <ul>
+                  <li><b>Choose Any 3 Pairs:</b> From our rugged safety eyewear to our stylish sunnies.</li>
+                  <li><b>Save 20%:</b> Automatically applied at checkout.</li>
+                  <li><b>Versatile Options: </b> Perfect for work, play, and everything in between.</li>
+                </ul>
+                Don’t miss out on this epic deal—grab your bundle today!
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      document.documentElement.classList.add('two_svg');
+
+      document.body.insertAdjacentHTML('beforeend', '<afterpay-modal data-modal-id="" data-locale="en_AU" data-modal-theme="null" data-apr-loans-available="false"></afterpay-modal>');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Bundle page",
+  "settings": [{
+    "type": "text",
+    "id": "discount_code",
+    "label": "Discount CODE"
+  }],
+  "blocks": [
+    {
+      "name": "Gallery slide",
+      "type": "gallery_slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_url",
+          "label": "Image URL"
+        },
+        {
+          "type": "text",
+          "id": "image_width",
+          "label": "Image width"
+        },
+        {
+          "type": "text",
+          "id": "image_height",
+          "label": "Image height"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Image alt text"
+        },
+        {
+          "type": "image_picker",
+          "id": "thumbnail_image",
+          "label": "Thumbnail image"
+        },
+        {
+          "type": "text",
+          "id": "thumbnail_image_url",
+          "label": "Thumbnail image URL"
+        },
+        {
+          "type": "text",
+          "id": "thumbnail_width",
+          "label": "Thumbnail width"
+        },
+        {
+          "type": "text",
+          "id": "thumbnail_height",
+          "label": "Thumbnail height"
+        },
+        {
+          "type": "text",
+          "id": "thumbnail_alt",
+          "label": "Thumbnail alt text"
+        }
+      ]
+    },
+    {
+      "name": "Tab",
+      "type": "tab",
+      "settings": [{
+        "type": "text",
+        "label": "Title",
+        "id": "title"
+      },{
+        "type": "collection",
+        "id": "collection",
+        "label": "Collection"
+      }]
+    }
+  ],
+  "presets": [
+    { "name": "Bundle page" }
+  ]
+}
+{% endschema %}

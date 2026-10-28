@@ -1,0 +1,41 @@
+<article class="ArticleItem" {% if block %}{{ block.shopify_attributes }}{% endif %}>
+  {%- if article.image != blank -%}
+    {%- capture supported_sizes -%}{%- render 'image-size', sizes: '200,400,600,700,800,900,1000,1200', image: article.image -%}{%- endcapture -%}
+    {%- assign image_widths = supported_sizes | split: ',' -%}
+    {%- capture image_srcset -%}
+      {%- for image_width in image_widths -%}
+        {{ article.image | image_url: width: image_width }} {{ image_width }}w{% unless forloop.last %}, {% endunless %}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    <a class="ArticleItem__ImageWrapper AspectRatio AspectRatio--withFallback" style="background: url({{ article.image | image_url: width: 20 }}); padding-bottom: 58%; --aspect-ratio: 1.7" href="{{ article.url }}">
+      <img class="ArticleItem__Image Image--fadeIn Image--lazyLoaded"
+           src="{{ article.image | image_url: width: 600 }}"
+           srcset="{{ image_srcset | strip_newlines | escape }}"
+           sizes="(max-width: 640px) 100vw, 33vw"
+           alt="{{ article.image.alt | escape }}"
+           width="{{ article.image.width }}"
+           height="{{ article.image.height }}"
+           loading="lazy">
+
+      <noscript>
+        <img class="ArticleItem__Image" src="{{ article.image | image_url: width: 600 }}" alt="{{ article.image.alt | escape }}" width="{{ article.image.width }}" height="{{ article.image.height }}">
+      </noscript>
+    </a>
+  {%- endif -%}
+
+  <div class="ArticleItem__Content">
+    {%- if section.settings.show_category -%}
+      <span class="ArticleItem__Category Heading u-h6 Text--subdued">{{ article.tags.first }}</span>
+    {%- endif -%}
+
+    <h2 class="ArticleItem__Title Heading u-h2">
+      <a href="{{ article.url }}">{{ article.title }}</a>
+    </h2>
+
+    {%- unless template.name == 'article' -%}
+      <p class="ArticleItem__Excerpt">{{ article.excerpt_or_content | strip_html | truncate: 150 }}</p>
+      <a href="{{ article.url }}" class="ArticleItem__Link Link Link--underline">{{ 'blog.article.read_more' | t }}</a>
+    {%- endunless -%}
+  </div>
+</article>
