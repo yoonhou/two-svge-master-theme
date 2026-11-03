@@ -137,6 +137,16 @@ document.documentElement.style.setProperty('--window-height', window.innerHeight
 <script src="{{ 'libs.min.js' | asset_url }}" defer></script>
 <script src="{{ 'theme.min.js' | asset_url }}" defer></script>
 <script src="{{ 'custom.js' | asset_url }}" defer></script>
+{%- comment -%} Global configuration shared by free-gift.js on the cart page and drawer. {%- endcomment -%}
+<script>
+  window.freeGiftSettings = {
+    enabled: {{ settings.free_gift_enabled | json }},
+    variantId: {% if settings.free_gift_product != blank %}{{ settings.free_gift_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %},
+    message: {{ settings.free_gift_qualified_message | json }},
+    checkoutPropertyValue: {{ settings.free_gift_checkout_property_value | json }}
+  };
+</script>
+<script src="{{ 'free-gift.js' | asset_url }}" defer></script>
 
 <script>
 (function () {
@@ -204,6 +214,7 @@ document.documentElement.style.setProperty('--window-height', window.innerHeight
 {%- if template != 'cart' -%}
 {% render 'cart-drawer' %}
 {%- endif -%}
+{% section 'acc-cart-drawer' %}
 
 <div class="PageContainer">
 {% section 'announcement' %}
@@ -240,7 +251,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <input type="hidden" id="judgeme_total_reviews_rating" data-reviews-rating="{{ shop.metafields.judgeme.all_reviews_rating }}">
 <input type="hidden" id="judgeme_total_reviews_count" data-reviews-count="{{ shop.metafields.judgeme.all_reviews_count }}">
 
-{% if template contains 'product' %}
+{%- comment -%} The free gift template is view-only, so it gets no sticky add-to-cart bar. {%- endcomment -%}
+{% if template contains 'product' and template.suffix != 'free-gift' %}
 <div class="sticky-btn-wrapper">
 <div class="pr_pricing">{{ product.price | money }}</div>
 {% if product.available %}

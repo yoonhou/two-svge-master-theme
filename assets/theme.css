@@ -6982,6 +6982,56 @@ body:not(.features--show-image-zooming) .Image--lazyLoaded.Image--zoomOut {
 	text-align: left;
 }
 
+/* Keep the configurable free gift badge readable beside the product title. */
+.FreeGiftProductLabel {
+	display: inline-block;
+	margin: 8px 0;
+}
+
+.FreeGiftQualifiedMessage {
+	margin: 0 0 18px;
+	padding: 10px 14px;
+	background: #edcd4e;
+	color: #131313;
+	font-size: 14px;
+	line-height: 1.4;
+	text-align: center;
+}
+
+.FreeGiftQualifiedMessage[hidden] {
+	display: none !important;
+}
+
+/* Compact gift label used below the marked line item title in the cart page. */
+.FreeGiftCartLabel {
+	display: inline-flex;
+	align-items: center;
+	align-self: center;
+	gap: 5px;
+	margin: 0 0 6px;
+	padding: 4px 7px;
+	background: #edcd4e;
+	color: #131313;
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+.FreeGiftCartLabel span {
+	display: inline-flex;
+	align-items: center;
+	align-self: center;
+	line-height: 1.2;
+}
+
+.FreeGiftCartLabel svg {
+	display: block;
+	width: 12px;
+	height: 12px;
+	flex: 0 0 12px;
+}
+
 .ProductItem__Label {
 	display: block;
 	font-size: calc(var(--base-text-font-size) - (var(--default-text-font-size) - 9px));

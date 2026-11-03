@@ -1,0 +1,635 @@
+{%- comment -%}
+  ACC_TS_Cart_10 - Custom cart drawer.
+  Rendered in layout/theme.liquid and re-rendered by assets/acc-cart-drawer.js
+  through the Section Rendering API (sections=acc-cart-drawer) after every cart change.
+{%- endcomment -%}
+{%- assign tn = 'ACC_TS_Cart_10' -%}
+
+{%- comment -%} Upsell bundle pricing: 3 x first variant price, minus discount {%- endcomment -%}
+{%- assign upsell_product = section.settings.upsell_product -%}
+{%- if upsell_product == blank -%}
+  {%- assign upsell_product = all_products[section.settings.upsell_handle] -%}
+{%- endif -%}
+{%- assign upsell_discount = section.settings.upsell_discount -%}
+{%- if upsell_product != blank and upsell_product.variants.size > 0 -%}
+  {%- assign upsell_compare = upsell_product.variants.first.price | times: 3 -%}
+  {%- assign upsell_keep = 100 | minus: upsell_discount -%}
+  {%- assign upsell_main = upsell_compare | times: upsell_keep | divided_by: 100.0 | round -%}
+  {%- assign upsell_saving = upsell_compare | minus: upsell_main -%}
+  {%- assign upsell_single = upsell_main | divided_by: 3.0 | round -%}
+{%- else -%}
+  {%- assign upsell_compare = 22092 -%}
+  {%- assign upsell_main = 17674 -%}
+  {%- assign upsell_saving = 4418 -%}
+  {%- assign upsell_single = 5892 -%}
+{%- endif -%}
+
+{%- if section.settings.upsell_image != blank -%}
+  {%- assign upsell_image = section.settings.upsell_image | image_url: width: 300 -%}
+{%- else -%}
+  {%- assign upsell_image = 'https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Cart_10-bundle.png?v=1779191522' -%}
+{%- endif -%}
+
+{%- comment -%} Total discount: line level discounts or cart level discount, whichever is larger {%- endcomment -%}
+{%- assign line_discount_total = 0 -%}
+{%- for item in cart.items -%}
+  {%- assign line_discount_total = line_discount_total | plus: item.line_level_total_discount -%}
+{%- endfor -%}
+{%- assign total_discount_amount = line_discount_total -%}
+{%- if cart.total_discount > total_discount_amount -%}
+  {%- assign total_discount_amount = cart.total_discount -%}
+{%- endif -%}
+
+{%- assign cart_has_free_gift = false -%}
+{%- for item in cart.items -%}
+  {%- if item.properties['_free_gift'] == 'true' -%}
+    {%- assign cart_has_free_gift = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%}
+  Free shipping progress. Settings live in the "Free shipping bar" block: threshold
+  (in the market currency) and offer copy per market, using the same market handles
+  as sections/announcement.liquid. A threshold of 0 or empty hides the bar for that market.
+{%- endcomment -%}
+{%- liquid
+  assign shipping_block = section.blocks | where: 'type', 'shipping_bar' | first
+  assign shipping_threshold = 0
+  assign shipping_offer = ''
+
+  if shipping_block
+    case localization.market.handle
+      when 'au'
+        assign shipping_threshold = shipping_block.settings.threshold_au
+        assign shipping_offer = shipping_block.settings.offer_au
+      when 'us'
+        assign shipping_threshold = shipping_block.settings.threshold_us
+        assign shipping_offer = shipping_block.settings.offer_us
+      when 'ca'
+        assign shipping_threshold = shipping_block.settings.threshold_ca
+        assign shipping_offer = shipping_block.settings.offer_ca
+      when 'nz'
+        assign shipping_threshold = shipping_block.settings.threshold_nz
+        assign shipping_offer = shipping_block.settings.offer_nz
+      when 'gb'
+        assign shipping_threshold = shipping_block.settings.threshold_gb
+        assign shipping_offer = shipping_block.settings.offer_gb
+      when 'international'
+        assign shipping_currency = shipping_block.settings.international_currency | upcase | strip
+        if shipping_currency == blank or cart.currency.iso_code == shipping_currency
+          assign shipping_threshold = shipping_block.settings.threshold_international
+          assign shipping_offer = shipping_block.settings.offer_international
+        endif
+    endcase
+  endif
+
+  assign shipping_threshold_cents = shipping_threshold | times: 100 | round
+  assign shipping_remaining = shipping_threshold_cents | minus: cart.total_price
+  assign shipping_percent = 100
+  if shipping_remaining > 0
+    assign shipping_percent = cart.total_price | times: 100.0 | divided_by: shipping_threshold_cents | round: 2
+    assign shipping_text = shipping_block.settings.progress_text
+  else
+    assign shipping_text = shipping_block.settings.success_text
+  endif
+
+  assign shipping_amount = shipping_remaining | money_without_trailing_zeros
+  assign shipping_text = shipping_text | replace: '[amount]', shipping_amount | replace: '[offer]', shipping_offer
+-%}
+
+{%- capture checkout_message -%}
+  {%- if cart.item_count > 0 and section.settings.message_text != blank -%}
+    <div class="{{ tn }}-cart-message {{ tn }}-cart-message--{{ section.settings.message_position }}">{{ section.settings.message_text }}</div>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- assign st = section.settings -%}
+<style>
+  .{{ tn }}-cart-drawer,
+  #{{ tn }}-cart-drawer-overlay {
+    --acc-cd-bg: {{ st.color_background }};
+    --acc-cd-text: {{ st.color_text }};
+    --acc-cd-muted: {{ st.color_muted }};
+    --acc-cd-border: {{ st.color_border }};
+    --acc-cd-soft-bg: {{ st.color_soft_background }};
+    --acc-cd-btn-bg: {{ st.color_button_background }};
+    --acc-cd-btn-text: {{ st.color_button_text }};
+    --acc-cd-message-bg: {{ st.color_message_background }};
+    --acc-cd-message-text: {{ st.color_message_text }};
+    --acc-cd-discount-bg: {{ st.color_discount_background }};
+    --acc-cd-discount-text: {{ st.color_discount_text }};
+    --acc-cd-upsell-text: {{ st.color_upsell_text }};
+    --acc-cd-upsell-border: {{ st.color_upsell_border }};
+    --acc-cd-badge-bg: {{ st.color_badge_background }};
+    --acc-cd-badge-label-bg: {{ st.color_badge_label_background }};
+    --acc-cd-badge-label-text: {{ st.color_badge_label_text }};
+    --acc-cd-badge-amount: {{ st.color_badge_amount }};
+    --acc-cd-saving-bg: {{ st.color_saving_background }};
+    --acc-cd-saving-text: {{ st.color_saving_text }};
+  }
+</style>
+
+{{ 'acc-cart-drawer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'acc-cart-drawer.js' | asset_url }}" defer></script>
+
+<div class="{{ tn }}-cart-drawer-overlay-hide" id="{{ tn }}-cart-drawer-overlay"></div>
+<div class="{{ tn }}-cart-drawer" data-item-count="{{ cart.item_count }}">
+  <form action="{{ routes.cart_url }}" method="post" class="{{ tn }}-cart-form">
+    <div class="{{ tn }}-cart-drawer-header">
+      <span>{{ section.settings.title_text }} <span class="{{ tn }}-cart-count">{{ cart.item_count }}</span></span>
+      <svg class="{{ tn }}-close-btn" style="cursor:pointer" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <path d="M26.5 10L10.5 26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10.5 10L26.5 26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    {%- if cart.item_count > 0 and shipping_threshold_cents > 0 -%}
+      {%- assign bs = shipping_block.settings -%}
+      <div
+        class="{{ tn }}-shipping-progress"
+        style="--acc-sp-bg: {{ bs.color_background }}; --acc-sp-text: {{ bs.color_text }}; --acc-sp-track: {{ bs.color_track }}; --acc-sp-fill: {{ bs.color_fill }}; --acc-sp-dot: {{ bs.color_dot }};"
+        {{ shipping_block.shopify_attributes }}
+      >
+        <div class="{{ tn }}-shipping-progress-text">{{ shipping_text }}</div>
+        <div class="{{ tn }}-shipping-progress-track">
+          <div class="{{ tn }}-shipping-progress-fill" style="width: {{ shipping_percent }}%;"></div>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.message_position == 'top' -%}{{ checkout_message }}{%- endif -%}
+
+    <div class="{{ tn }}-cart-drawer-body">
+      <div class="{{ tn }}-cart-items">
+        {%- if cart_has_free_gift and settings.free_gift_qualified_message != blank -%}
+          <div class="FreeGiftQualifiedMessage" hidden role="status" aria-live="polite" aria-atomic="true">
+            {{ settings.free_gift_qualified_message | escape }}
+          </div>
+        {%- endif -%}
+        {%- if cart.item_count == 0 -%}
+          <div class="{{ tn }}-cart-empty">{{ section.settings.empty_text }}</div>
+        {%- else -%}
+          {%- comment -%} Render regular items first and the marked free gift last. {%- endcomment -%}
+          {%- for item_pass in (1..2) -%}
+          {%- for item in cart.items -%}
+            {%- assign is_free_gift = false -%}
+            {%- if item.properties['_free_gift'] == 'true' -%}
+              {%- assign is_free_gift = true -%}
+            {%- endif -%}
+            {%- assign should_render_item = false -%}
+            {%- if item_pass == 1 and is_free_gift == false -%}
+              {%- assign should_render_item = true -%}
+            {%- elsif item_pass == 2 and is_free_gift -%}
+              {%- assign should_render_item = true -%}
+            {%- endif -%}
+            {%- if should_render_item -%}
+            {%- assign has_discount = false -%}
+            {%- if item.original_line_price > item.final_line_price -%}
+              {%- assign has_discount = true -%}
+            {%- endif -%}
+            {%- assign discount_amount = item.original_line_price | minus: item.final_line_price -%}
+
+            <div class="{{ tn }}-cart-item" data-line="{{ forloop.index }}" data-variant-id="{{ item.variant_id }}">
+              <div class="{{ tn }}-item-image">
+                {%- unless is_free_gift -%}<a href="{{ item.url }}">{%- endunless -%}
+                  {%- if item.image -%}
+                    <img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.title | escape }}" class="{{ tn }}-item-image-img" width="125" height="125" loading="lazy">
+                  {%- else -%}
+                    <img src="https://twosvge.com/cdn/shop/files/pbr_heat_w1_400x.jpg?v=1769676902" alt="{{ item.title | escape }}" class="{{ tn }}-item-image-img" width="125" height="125" loading="lazy">
+                  {%- endif -%}
+                {%- unless is_free_gift -%}</a>{%- endunless -%}
+              </div>
+              <div class="{{ tn }}-item-details">
+                <div class="{{ tn }}-item-details-inner{% if is_free_gift %} {{ tn }}-item-details-inner--free-gift{% endif %}">
+                  <div class="{{ tn }}-item-name">{%- if is_free_gift -%}{{ item.title }}{%- else -%}<a href="{{ item.url }}">{{ item.title }}</a>{%- endif -%}</div>
+                  {%- if item.variant.title != blank and item.variant.title != 'Default Title' -%}
+                    <div class="{{ tn }}-item-variant">{{ item.variant.title }}</div>
+                  {%- endif -%}
+                  <div class="{{ tn }}-item-price">
+                    <span class="{{ tn }}-item-price-current">{{ item.final_line_price | money }}</span>
+                    {%- if is_free_gift and item.variant.compare_at_price > 0 -%}
+                      <span class="{{ tn }}-item-price-original">{{ item.variant.compare_at_price | times: item.quantity | money }}</span>
+                    {%- elsif is_free_gift and item.original_line_price > 0 -%}
+                      <span class="{{ tn }}-item-price-original">{{ item.original_line_price | money }}</span>
+                    {%- elsif has_discount -%}
+                      <span class="{{ tn }}-item-price-original">{{ item.original_line_price | money }}</span>
+                    {%- endif -%}
+                  </div>
+                </div>
+                {%- if is_free_gift -%}
+                  <div class="{{ tn }}-free-gift-label">
+                    <svg class="{{ tn }}-free-gift-icon" aria-hidden="true" viewBox="0 0 20 20" fill="none">
+                      <path d="M3 8h14v9H3V8Zm-1-3h16v3H2V5Zm8 0v12M10 5H6.8a1.8 1.8 0 1 1 1.7-2.4L10 5Zm0 0h3.2a1.8 1.8 0 1 0-1.7-2.4L10 5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>{{ settings.free_gift_label | default: 'Black Friday Free Gift' | escape }}</span>
+                  </div>
+                {%- endif -%}
+
+                {%- if has_discount -%}
+                  {%- assign discount_title = item.line_level_discount_allocations.first.discount_application.title -%}
+                  {%- if discount_title == blank -%}
+                    {%- assign discount_percent = discount_amount | times: 100.0 | divided_by: item.original_line_price | round -%}
+                    {%- assign discount_title = discount_percent | append: '% DISCOUNT' -%}
+                  {%- endif -%}
+                  <div class="{{ tn }}-item-discount-badge">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 11 3.83a2 2 0 0 0-1.42-.58H4a2 2 0 0 0-2 2v5.59a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l6.59-6.59a2 2 0 0 0 0-2.83Z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>
+                    <span>{{ discount_title | escape }}: -{{ discount_amount | money }}</span>
+                  </div>
+                {%- endif -%}
+
+                {%- unless is_free_gift -%}
+                <div class="{{ tn }}-item-quantity-container">
+                  <div class="{{ tn }}-quantity">
+                    <svg class="{{ tn }}-quantity-decrease" data-line="{{ forloop.index }}" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 1" fill="none" style="cursor:pointer">
+                      <path d="M0.46875 0.46875H9.21875" stroke="currentColor" stroke-width="0.9375" stroke-linecap="square"/>
+                    </svg>
+                    <span contenteditable="true" class="{{ tn }}-quantity-value" data-line="{{ forloop.index }}" data-original="{{ item.quantity }}">{{ item.quantity }}</span>
+                    <svg class="{{ tn }}-quantity-increase" data-line="{{ forloop.index }}" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" style="cursor:pointer">
+                      <g clip-path="url(#clip_inc_{{ forloop.index }})">
+                        <path d="M5 0.625V9.375" stroke="currentColor" stroke-width="0.9375" stroke-linecap="square"/>
+                        <path d="M0.625 5H9.375" stroke="currentColor" stroke-width="0.9375" stroke-linecap="square"/>
+                      </g>
+                      <defs>
+                        <clipPath id="clip_inc_{{ forloop.index }}">
+                          <rect width="10" height="10" fill="white"/>
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div class="{{ tn }}-remove-item" data-line="{{ forloop.index }}" style="cursor:pointer">{{ section.settings.remove_text }}</div>
+                </div>
+                {%- endunless -%}
+              </div>
+            </div>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- endfor -%}
+
+          <div class="{{ tn }}-review-badge">
+            <img src="https://cdn.shopify.com/s/files/1/0083/8441/3756/files/ACC_TS_Cart_10-user_New.png?v=1779700567" alt="{{ section.settings.review_text | escape }}" class="{{ tn }}-review-badge-image" width="39" height="18">
+            <span>{{ section.settings.review_text }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="{{ tn }}-cart-upsell" style="display: {% if cart.item_count == 0 %}none{% else %}block{% endif %};">
+        {%- if cart.item_count > 0 -%}
+          <div class="{{ tn }}-upsell-container">
+            <div class="{{ tn }}-upsell-header">{{ section.settings.upsell_heading }}</div>
+            <div class="{{ tn }}-upsell-products">
+              <a href="{{ section.settings.upsell_url }}" class="{{ tn }}-upsell-product-link">
+                <div class="{{ tn }}-upsell-product">
+                  <div class="{{ tn }}-upsell-product-image-wrapper">
+                    <img src="{{ upsell_image }}" alt="{{ section.settings.upsell_title | escape }}" class="{{ tn }}-upsell-product-image" width="90" height="90" loading="lazy">
+                  </div>
+
+                  <div class="{{ tn }}-upsell-product-details">
+                    <div class="{{ tn }}-upsell-product-details-head">
+                      <div class="{{ tn }}-upsell-title-container">
+                        <div class="{{ tn }}-upsell-title-container-inner">
+                          <div class="{{ tn }}-upsell-product-name">{{ section.settings.upsell_title }}</div>
+                          <div class="{{ tn }}-upsell-product-description">{{ section.settings.upsell_info }}</div>
+                        </div>
+                        <div class="{{ tn }}-upsell-price-container">
+                          <div class="{{ tn }}-upsell-from">{{ section.settings.upsell_from_text }}</div>
+                          <div class="{{ tn }}-upsell-product-price">{{ upsell_single | money }}</div>
+                          <div class="{{ tn }}-upsell-product-price-info">{{ section.settings.upsell_per_item_text }}</div>
+                        </div>
+                      </div>
+                      <div class="{{ tn }}-upsell-product-price-container">
+                        <div class="{{ tn }}-upsell-from">{{ section.settings.upsell_from_text }}</div>
+                        <div class="{{ tn }}-upsell-product-discounted-price">{{ upsell_compare | money }}</div>
+                        <div class="{{ tn }}-upsell-product-original-price">{{ upsell_main | money }}</div>
+                        <div class="{{ tn }}-upsell-product-saving">{{ section.settings.upsell_save_text }} {{ upsell_saving | money }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="{{ tn }}-upsell-discount-badge-wrapper">
+                    <div class="{{ tn }}-upsell-discount-badge">{{ section.settings.upsell_badge_text }}</div>
+                    <div class="{{ tn }}-upsell-discount-amount">{{ upsell_discount }}%</div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="{{ tn }}-cart-drawer-footer" style="display: {% if cart.item_count == 0 %}none{% else %}flex{% endif %};">
+      <div class="{{ tn }}-cart-drawer-footer-price-container">
+        <div class="{{ tn }}-checkout-container">
+          <div class="{{ tn }}--label">{{ section.settings.subtotal_text }}</div>
+          <div class="{{ tn }}-cart-subtotal">{{ cart.original_total_price | money }}</div>
+        </div>
+
+        <div style="display:none" class="{{ tn }}-checkout-container">
+          <div class="{{ tn }}--label">Bundle saving</div>
+          <div class="{{ tn }}-cart-savings">{{ total_discount_amount | money }}</div>
+        </div>
+
+        <div class="{{ tn }}-checkout-container">
+          <div class="{{ tn }}--label-container">
+            <div class="{{ tn }}--label">Shipping</div>
+            <span class="{{ tn }}--label-note">Free</span>
+          </div>
+          <div class="{{ tn }}-cart-shipping">Free</div>
+        </div>
+
+        <div class="{{ tn }}-checkout-container">
+          <div class="{{ tn }}--label-total">{{ section.settings.total_text }}</div>
+          <div class="{{ tn }}-cart-total">
+            {%- if cart.original_total_price > cart.total_price -%}
+              <span class="{{ tn }}-cart-savings-main-total">{{ cart.original_total_price | money }}</span>
+            {%- endif -%}
+            {{- cart.total_price | money -}}
+          </div>
+        </div>
+      </div>
+
+      {%- if section.settings.message_position == 'footer' -%}{{ checkout_message }}{%- endif -%}
+
+      <button name="checkout" class="{{ tn }}-checkout-btn" type="submit">
+        <span>{{ section.settings.checkout_text }}</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+{% schema %}
+{
+  "name": "Cart drawer (ACC)",
+  "settings": [
+    { "type": "header", "content": "Texts" },
+    { "type": "text", "id": "title_text", "label": "Drawer title", "default": "Cart" },
+    { "type": "text", "id": "message_text", "label": "Checkout message", "default": "Solid choice. Complete checkout to secure your pair.", "info": "Leave empty to hide" },
+    {
+      "type": "select",
+      "id": "message_position",
+      "label": "Checkout message position",
+      "options": [
+        { "value": "top", "label": "Below title" },
+        { "value": "footer", "label": "Above checkout button" }
+      ],
+      "default": "top"
+    },
+    { "type": "text", "id": "empty_text", "label": "Empty cart text", "default": "Your cart is empty." },
+    { "type": "text", "id": "remove_text", "label": "Remove text", "default": "remove" },
+    { "type": "text", "id": "review_text", "label": "Review badge text", "default": "40,000+ five-star verified reviews" },
+    { "type": "text", "id": "subtotal_text", "label": "Subtotal label", "default": "Subtotal" },
+    { "type": "text", "id": "total_text", "label": "Total label", "default": "Total" },
+    { "type": "text", "id": "checkout_text", "label": "Checkout button text", "default": "GO TO SECURE CHECKOUT" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "color_background", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "color_text", "label": "Text", "default": "#131313" },
+    { "type": "color", "id": "color_muted", "label": "Secondary text", "default": "#6C6C6C" },
+    { "type": "color", "id": "color_border", "label": "Product card border", "default": "#131313" },
+    { "type": "color", "id": "color_soft_background", "label": "Footer and review badge background", "default": "#F2F2F2" },
+    { "type": "color", "id": "color_button_background", "label": "Checkout button background", "default": "#EDCD4E" },
+    { "type": "color", "id": "color_button_text", "label": "Checkout button text", "default": "#131313" },
+    { "type": "color", "id": "color_message_background", "label": "Checkout message background", "default": "#F2F2F2" },
+    { "type": "color", "id": "color_message_text", "label": "Checkout message text", "default": "#131313" },
+    { "type": "color", "id": "color_discount_background", "label": "Item discount badge background", "default": "#F5EFD6" },
+    { "type": "color", "id": "color_discount_text", "label": "Item discount badge text", "default": "#B8860B" },
+    { "type": "color", "id": "color_upsell_text", "label": "Upsell text", "default": "#000000" },
+    { "type": "color", "id": "color_upsell_border", "label": "Upsell border", "default": "#000000" },
+    { "type": "color", "id": "color_badge_background", "label": "Upsell badge background", "default": "#000000" },
+    { "type": "color", "id": "color_badge_label_background", "label": "Upsell badge label background", "default": "#EDCB54" },
+    { "type": "color", "id": "color_badge_label_text", "label": "Upsell badge label text", "default": "#000000" },
+    { "type": "color", "id": "color_badge_amount", "label": "Upsell badge amount", "default": "#EDCD4E" },
+    { "type": "color", "id": "color_saving_background", "label": "Upsell savings pill background", "default": "#EDCD4E" },
+    { "type": "color", "id": "color_saving_text", "label": "Upsell savings pill text", "default": "#000000" },
+    {
+      "type": "header",
+      "content": "Bundle upsell"
+    },
+    {
+      "type": "product",
+      "id": "upsell_product",
+      "label": "Bundle price product",
+      "info": "Bundle price = 3 x first variant price, minus discount. Leave empty to use the handle below."
+    },
+    {
+      "type": "text",
+      "id": "upsell_handle",
+      "label": "Bundle price product handle (fallback)",
+      "default": "intent-havana"
+    },
+    {
+      "type": "range",
+      "id": "upsell_discount",
+      "label": "Bundle discount",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "text",
+      "id": "upsell_url",
+      "label": "Bundle link",
+      "default": "/pages/bundle"
+    },
+    {
+      "type": "image_picker",
+      "id": "upsell_image",
+      "label": "Bundle image"
+    },
+    {
+      "type": "text",
+      "id": "upsell_title",
+      "label": "Bundle title",
+      "default": "3 pack bundle"
+    },
+    {
+      "type": "text",
+      "id": "upsell_info",
+      "label": "Bundle text",
+      "default": "Choose any 3 styles"
+    },
+    { "type": "text", "id": "upsell_heading", "label": "Upsell heading", "default": "Bundle and save" },
+    { "type": "text", "id": "upsell_from_text", "label": "From text", "default": "From" },
+    { "type": "text", "id": "upsell_per_item_text", "label": "Per item text", "default": "per item" },
+    { "type": "text", "id": "upsell_save_text", "label": "Savings pill text", "default": "Save at least" },
+    { "type": "text", "id": "upsell_badge_text", "label": "Badge text", "default": "Save" }
+  ],
+  "blocks": [
+    {
+      "type": "shipping_bar",
+      "name": "Free shipping bar",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Use [amount] for the amount left and [offer] for the market offer text."
+        },
+        {
+          "type": "text",
+          "id": "progress_text",
+          "label": "Progress text",
+          "default": "Add [amount] more to unlock [offer]"
+        },
+        {
+          "type": "text",
+          "id": "success_text",
+          "label": "Unlocked text",
+          "default": "Congrats! You have unlocked [offer]"
+        },
+        {
+          "type": "header",
+          "content": "Australia"
+        },
+        {
+          "type": "number",
+          "id": "threshold_au",
+          "label": "Free shipping threshold",
+          "default": 100,
+          "info": "In the market currency. 0 or empty hides the bar."
+        },
+        {
+          "type": "text",
+          "id": "offer_au",
+          "label": "Offer text",
+          "default": "FREE EXPRESS SHIPPING"
+        },
+        {
+          "type": "header",
+          "content": "United States"
+        },
+        {
+          "type": "number",
+          "id": "threshold_us",
+          "label": "Free shipping threshold",
+          "default": 80,
+          "info": "In the market currency. 0 or empty hides the bar."
+        },
+        {
+          "type": "text",
+          "id": "offer_us",
+          "label": "Offer text",
+          "default": "FREE SHIPPING"
+        },
+        {
+          "type": "header",
+          "content": "Canada"
+        },
+        {
+          "type": "number",
+          "id": "threshold_ca",
+          "label": "Free shipping threshold",
+          "default": 100,
+          "info": "In the market currency. 0 or empty hides the bar."
+        },
+        {
+          "type": "text",
+          "id": "offer_ca",
+          "label": "Offer text",
+          "default": "FREE SHIPPING"
+        },
+        {
+          "type": "header",
+          "content": "New Zealand"
+        },
+        {
+          "type": "number",
+          "id": "threshold_nz",
+          "label": "Free shipping threshold",
+          "default": 125,
+          "info": "In the market currency. 0 or empty hides the bar."
+        },
+        {
+          "type": "text",
+          "id": "offer_nz",
+          "label": "Offer text",
+          "default": "FREE SHIPPING"
+        },
+        {
+          "type": "header",
+          "content": "United Kingdom"
+        },
+        {
+          "type": "number",
+          "id": "threshold_gb",
+          "label": "Free shipping threshold",
+          "default": 70,
+          "info": "In the market currency. 0 or empty hides the bar."
+        },
+        {
+          "type": "text",
+          "id": "offer_gb",
+          "label": "Offer text",
+          "default": "FREE SHIPPING"
+        },
+        {
+          "type": "header",
+          "content": "International"
+        },
+        {
+          "type": "number",
+          "id": "threshold_international",
+          "label": "Free shipping threshold",
+          "default": 100,
+          "info": "In the currency below. 0 or empty hides the bar."
+        },
+        {
+          "type": "text",
+          "id": "offer_international",
+          "label": "Offer text",
+          "default": "FREE SHIPPING"
+        },
+        {
+          "type": "text",
+          "id": "international_currency",
+          "label": "Currency code",
+          "default": "AUD",
+          "info": "Bar only shows when the cart is in this currency. Leave empty to show for all currencies."
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "color_background",
+          "label": "Background",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text",
+          "default": "#131313"
+        },
+        {
+          "type": "color",
+          "id": "color_track",
+          "label": "Bar background",
+          "default": "#DFDFDF"
+        },
+        {
+          "type": "color",
+          "id": "color_fill",
+          "label": "Bar fill",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "color_dot",
+          "label": "Bar dot",
+          "default": "#EDCD4E"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "shipping_bar"
+      }
+    ]
+  }
+}
+{% endschema %}

@@ -431,7 +431,30 @@
     render();
   };
 
-  const redirectOrOpenDrawer = () => {
+  const redirectOrOpenDrawer = async () => {
+    if (window.AccCartDrawer) {
+      state.isAdding = false;
+      state.selection = [];
+      render();
+      closeModal();
+
+      // Notify the free gift manager after the bundle add. Wait for its cart
+      // reconciliation before rendering and opening the ACC drawer.
+      const cartUpdatedEvent = new CustomEvent('acc:cart:updated', {
+        bubbles: true,
+        detail: { source: 'cw-bundle-modal', action: 'add' },
+      });
+      document.documentElement.dispatchEvent(cartUpdatedEvent);
+      if (cartUpdatedEvent.detail.reconciliation) {
+        await cartUpdatedEvent.detail.reconciliation;
+      }
+
+      await window.AccCartDrawer.refresh();
+      window.FreeGiftManager?.showQualifiedMessage?.();
+      window.AccCartDrawer.open();
+      return;
+    }
+
     if (window.CartRedirect === 0) {
       document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
       document.querySelector('a[data-action="open-drawer"].Header__Icon')?.click();

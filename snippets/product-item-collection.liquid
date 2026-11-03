@@ -65,6 +65,18 @@
 
     {%- if show_labels -%}
       {%- capture product_labels -%}
+        {%- assign show_free_gift_label = false -%}
+        {%- if settings.free_gift_label != blank -%}
+          {%- if product.tags contains 'free-gift' or product.tags contains 'free gift' -%}
+            {%- assign show_free_gift_label = true -%}
+          {%- endif -%}
+          {%- if settings.free_gift_product != blank and settings.free_gift_product.id == product.id -%}
+            {%- assign show_free_gift_label = true -%}
+          {%- endif -%}
+        {%- endif -%}
+        {%- if show_free_gift_label -%}
+          <span class="ProductItem__Label Heading Text--subdued">{{ settings.free_gift_label | escape }}</span>
+        {%- endif -%}
         {%- for tag in product.tags -%}
           {%- if tag contains '__label' -%}
             <span class="ProductItem__Label Heading Text--subdued">{{ tag | split: '__label:' | last }}</span>

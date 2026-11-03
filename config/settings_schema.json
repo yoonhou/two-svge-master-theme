@@ -1,5 +1,40 @@
 [
   {
+    "name": "Free gift",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "free_gift_enabled",
+        "label": "Enable free gift",
+        "default": false
+      },
+      {
+        "type": "product",
+        "id": "free_gift_product",
+        "label": "Free gift product"
+      },
+      {
+        "type": "text",
+        "id": "free_gift_label",
+        "label": "Free gift product label",
+        "default": "Black Friday Free Gift"
+      },
+      {
+        "type": "text",
+        "id": "free_gift_checkout_property_value",
+        "label": "Checkout gift property value",
+        "default": "Black Friday",
+        "info": "Shown as the value for the Free Gift line item property at checkout."
+      },
+      {
+        "type": "text",
+        "id": "free_gift_qualified_message",
+        "label": "Qualified cart message",
+        "default": "A free gift has been added to your cart."
+      }
+    ]
+  },
+  {
     "name": "theme_info",
     "theme_name": "Prestige",
     "theme_author": "Maestrooo",

@@ -14,13 +14,40 @@
     </div>
   {%- endunless -%}
 
+  {%- assign cart_has_free_gift = false -%}
+  {%- for item in cart.items -%}
+    {%- if item.properties['_free_gift'] == 'true' -%}
+      {%- assign cart_has_free_gift = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if cart_has_free_gift and settings.free_gift_qualified_message != blank -%}
+    <div class="FreeGiftQualifiedMessage" hidden role="status" aria-live="polite" aria-atomic="true">
+      {{ settings.free_gift_qualified_message | escape }}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Keep the free gift at the bottom on both the cart page and legacy drawer. {%- endcomment -%}
+  {%- for item_pass in (1..2) -%}
   {%- for line_item in cart.items -%}
+    {%- assign is_free_gift = false -%}
+    {%- if line_item.properties['_free_gift'] == 'true' -%}
+      {%- assign is_free_gift = true -%}
+    {%- endif -%}
+    {%- assign should_render_item = false -%}
+    {%- if item_pass == 1 and is_free_gift == false -%}
+      {%- assign should_render_item = true -%}
+    {%- elsif item_pass == 2 and is_free_gift -%}
+      {%- assign should_render_item = true -%}
+    {%- endif -%}
+    {%- if should_render_item -%}
     {%- if for_drawer -%}
       <div class="CartItemWrapper">
     {%- endif -%}
 
     <div class="CartItem">
-      <div class="CartItem__ImageWrapper AspectRatio">
+      {%- comment -%} Let the inner ratio wrapper size the image; avoid stacking two ratio boxes in the cart row. {%- endcomment -%}
+      <div class="CartItem__ImageWrapper">
         <div class="AspectRatio" style="--aspect-ratio: {{ line_item.image.aspect_ratio }}">
           <img class="CartItem__Image" src="{{ line_item.image | image_url: width: 240 }}" alt="{{ line_item.image.alt | escape }}" width="{{ line_item.image.width }}" height="{{ line_item.image.height }}">
         </div>
@@ -28,8 +55,14 @@
 
       <div class="CartItem__Info">
         <h2 class="CartItem__Title Heading">
-          <a href="{{ line_item.url }}">{{ line_item.product.title | escape }}</a>
+          {%- if is_free_gift -%}{{ line_item.product.title | escape }}{%- else -%}<a href="{{ line_item.url }}">{{ line_item.product.title | escape }}</a>{%- endif -%}
         </h2>
+        {%- if is_free_gift -%}
+          <div class="FreeGiftCartLabel">
+            <svg aria-hidden="true" viewBox="0 0 20 20" fill="none"><path d="M3 8h14v9H3V8Zm-1-3h16v3H2V5Zm8 0v12M10 5H6.8a1.8 1.8 0 1 1 1.7-2.4L10 5Zm0 0h3.2a1.8 1.8 0 1 0-1.7-2.4L10 5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>{{ settings.free_gift_label | default: 'Black Friday Free Gift' | escape }}</span>
+          </div>
+        {%- endif -%}
 
         <div class="CartItem__Meta Heading Text--subdued">
           {%- unless line_item.product.has_only_default_variant -%}
@@ -45,7 +78,7 @@
               {%- for property in line_item.properties -%}
                 {%- assign first_character_in_key = property.first | truncate: 1, '' -%}
 
-                {%- if property.last == blank or first_character_in_key == '_' -%}
+                {%- if property.last == blank or first_character_in_key == '_' or property.first == 'Free Gift' -%}
                   {%- continue -%}
                 {%- endif -%}
 
@@ -55,7 +88,14 @@
           {%- endif -%}
 
           <div class="CartItem__PriceList">
-            {%- if line_item.original_price != line_item.final_price -%}
+            {%- if is_free_gift -%}
+              <span class="CartItem__Price Price Price--highlight">{{ line_item.final_price | money_without_trailing_zeros }}</span>
+              {%- if line_item.variant.compare_at_price > 0 -%}
+                <span class="CartItem__OriginalPrice Price Price--compareAt">{{ line_item.variant.compare_at_price | money_without_trailing_zeros }}</span>
+              {%- elsif line_item.original_price > 0 -%}
+                <span class="CartItem__OriginalPrice Price Price--compareAt">{{ line_item.original_price | money_without_trailing_zeros }}</span>
+              {%- endif -%}
+            {%- elsif line_item.original_price != line_item.final_price -%}
               <span class="CartItem__Price Price Price--highlight">{{ line_item.final_price | money_without_trailing_zeros }}</span>
               <span class="CartItem__OriginalPrice Price Price--compareAt">{{ line_item.original_price | money_without_trailing_zeros }}</span>
             {%- else -%}
@@ -89,6 +129,7 @@
           {%- endif -%}
         </div>
 
+        {%- unless is_free_gift -%}
         {%- capture item_actions -%}
           <div class="CartItem__Actions Heading Text--subdued" style="text-align: center">
             <div class="CartItem__QuantitySelector">
@@ -112,15 +153,28 @@
             <a href="{{ routes.cart_change_url }}?quantity=0&line={{ forloop.index }}" class="CartItem__Remove Link Link--underline Link--underlineShort" data-quantity="0" data-line="{{ forloop.index }}" data-action="remove-item">{{ 'cart.items.remove' | t }}</a>
           </div>
         {%- endcapture -%}
+        {%- endunless -%}
 
-        {{ item_actions }}
+        {%- unless is_free_gift -%}{{ item_actions }}{%- endunless -%}
       </div>
 
       {%- unless for_drawer -%}
-        {{ item_actions }}
+        {%- if is_free_gift -%}
+          {%- comment -%} Preserve the desktop cart table quantity column without showing gift controls. {%- endcomment -%}
+          <div class="CartItem__Actions CartItem__Actions--freeGift" aria-hidden="true"></div>
+        {%- else -%}
+          {{ item_actions }}
+        {%- endif -%}
 
         <div class="CartItem__LinePriceList Heading Text--subdued" style="text-align: right">
-          {%- if line_item.original_line_price != line_item.final_line_price -%}
+          {%- if is_free_gift -%}
+            <span class="CartItem__Price Price Price--highlight">{{ line_item.final_line_price | money_without_trailing_zeros }}</span>
+            {%- if line_item.variant.compare_at_price > 0 -%}
+              <span class="CartItem__Price Price Price--compareAt">{{ line_item.variant.compare_at_price | times: line_item.quantity | money_without_trailing_zeros }}</span>
+            {%- elsif line_item.original_line_price > 0 -%}
+              <span class="CartItem__Price Price Price--compareAt">{{ line_item.original_line_price | money_without_trailing_zeros }}</span>
+            {%- endif -%}
+          {%- elsif line_item.original_line_price != line_item.final_line_price -%}
             <span class="CartItem__Price Price Price--highlight">{{ line_item.final_line_price | money_without_trailing_zeros }}</span>
             <span class="CartItem__Price Price Price--compareAt">{{ line_item.original_line_price | money_without_trailing_zeros }}</span>
           {%- else -%}
@@ -133,5 +187,7 @@
     {%- if for_drawer -%}
       </div>
     {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
   {%- endfor -%}
 </div>
