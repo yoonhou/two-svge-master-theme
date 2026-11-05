@@ -293,7 +293,8 @@
 
               {%- when 'color_swatches' -%}
                 {% render 'cw-color-swatches', product: product, block: block %}
-
+              {%- when 'partner' -%}
+                {%-  render 'acc_ts_product_38' ,block:block -%}
               {%- when 'buy_buttons' -%}
                 {%- if product.template_suffix != 'coming-soon' -%}
                   {%- render 'product-form', product: product, block: block -%}
@@ -882,6 +883,39 @@ function checkAndUpdateText(element, reviewBadgeContainer) {
       "name": "Color swatches",
       "limit": 1
     },
+    {
+  "type": "partner",
+  "name": "Partner",
+  "limit": 1,
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Official Eyewear Partner Of" },
+    { "type": "image_picker", "id": "image_1", "label": "Logo 1" },
+    { "type": "image_picker", "id": "image_2", "label": "Logo 2" },
+    { "type": "image_picker", "id": "image_3", "label": "Logo 3" },
+    {
+      "type": "checkbox",
+      "id": "lazy_load",
+      "label": "Lazy load images",
+      "info": "Turn off if the block shows above the fold.",
+      "default": true
+    },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "card_border", "label": "Card border", "default": "#dcdcdc" },
+    { "type": "color", "id": "heading_color", "label": "Heading text", "default": "#000000" },
+    { "type": "color", "id": "divider_color", "label": "Divider lines", "default": "#131313" },
+
+    { "type": "header", "content": "Spacing (desktop)" },
+    { "type": "range", "id": "padding_top", "label": "Top space", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom space", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+
+    { "type": "header", "content": "Spacing (tablet and mobile)" },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top space", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 5 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom space", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ]
+},
     {
       "type": "buy_buttons",
       "name": "Product form",

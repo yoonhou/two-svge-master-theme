@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -24,7 +33,13 @@
           "settings": {}
         }
       },
-      "block_order": ["product_meta", "color_swatches", "buy_buttons", "bundle_button", "description"],
+      "block_order": [
+        "product_meta",
+        "color_swatches",
+        "buy_buttons",
+        "bundle_button",
+        "description"
+      ],
       "settings": {
         "show_share_buttons": false,
         "show_vendor": false,
@@ -40,7 +55,6 @@
         "show_price_in_button": false,
         "show_payment_button": false,
         "show_pickup_availability": false,
-        "show_bundle_button": true,
         "bundle_button_image": "shopify://shop_images/3-PACK_bundle_300_new.png",
         "bundle_title": "3 pack bundle",
         "bundle_subtitle": "Choose any 3 styles",
@@ -78,5 +92,9 @@
       }
     }
   },
-  "order": ["main", "product-recommendations", "recently-viewed-products"]
+  "order": [
+    "main",
+    "product-recommendations",
+    "recently-viewed-products"
+  ]
 }

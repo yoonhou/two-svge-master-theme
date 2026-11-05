@@ -1,0 +1,12 @@
+{
+  "name": "two-svge-free-gift-tests",
+  "private": true,
+  "scripts": {
+    "test": "node ./node_modules/@playwright/test/cli.js test",
+    "test:storefront": "RUN_STOREFRONT_TESTS=1 node ./node_modules/@playwright/test/cli.js test storefront.spec.js",
+    "test:stress": "node ./node_modules/@playwright/test/cli.js test stress.spec.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}

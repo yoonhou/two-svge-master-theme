@@ -1,1 +1,127 @@
-{"sections":{"main":{"type":"product-template","blocks":{"product_meta":{"type":"product_meta","settings":{}},"color_swatches":{"type":"color_swatches","settings":{}},"buy_buttons":{"type":"buy_buttons","settings":{}},"bundle_jGjCXy":{"type":"bundle","settings":{}},"bundle_button":{"type":"bundle_button","disabled":true,"settings":{}},"description":{"type":"description","settings":{}}},"block_order":["product_meta","color_swatches","buy_buttons","bundle_jGjCXy","bundle_button","description"],"settings":{"show_share_buttons":false,"show_vendor":false,"show_sku":false,"show_taxes_included":false,"description_below_add_to_cart":true,"selector_mode":"dropdown","show_color_swatch":false,"show_color_carousel":false,"show_quantity_selector":true,"show_inventory_quantity":false,"inventory_quantity_threshold":3,"show_price_in_button":false,"show_payment_button":false,"show_pickup_availability":false,"bundle_price_product":"intent-black","bundle_page_url":"","bundle_button_image":"shopify:\/\/shop_images\/3-PACK_bundle_300_new.png","bundle_title":"3 pack bundle","bundle_subtitle":"Choose any 3 styles","bundle_discount_prefix":"save","bundle_discount_value":"20%","image_size":"large","stack_images":false,"show_thumbnails":true,"enable_image_zoom":false,"enable_video_looping":false,"tab_page_1_handle":"","tab_page_2_handle":"shipping-delivery","reviews_enabled":false,"featured_image_size":"large"}},"product-recommendations":{"type":"product-recommendations","settings":{"show_product_recommendations":true,"heading":"You may also like","show_product_info":true,"show_vendor":false,"show_color_swatch":false}},"recently-viewed-products":{"type":"recently-viewed-products","settings":{"show_section":false,"title":"Recently viewed","show_product_info":true,"show_vendor":false,"show_color_swatch":false}}},"order":["main","product-recommendations","recently-viewed-products"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product-template",
+      "blocks": {
+        "product_meta": {
+          "type": "product_meta",
+          "settings": {}
+        },
+        "color_swatches": {
+          "type": "color_swatches",
+          "settings": {}
+        },
+         "partner_TwcrBf": {
+         "type": "partner",
+          "settings": {
+            "heading": "Official Eyewear Partner Of",
+            "image_1": "shopify://shop_images/ACC_TS_Product_38_image_01.png",
+            "image_2": "shopify://shop_images/ACC_TS_Product_38_image_2.png",
+            "image_3": "shopify://shop_images/ACC_TS_Product_38_image_3.png",
+            "lazy_load": true,
+            "card_bg": "#ffffff",
+            "card_border": "#dcdcdc",
+            "heading_color": "#000000",
+            "divider_color": "#131313",
+            "padding_top": 20,
+            "padding_bottom": 0,
+            "padding_top_mobile": 20,
+            "padding_bottom_mobile": 0
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {}
+        },
+        "bundle_jGjCXy": {
+          "type": "bundle",
+          "settings": {}
+        },
+        "bundle_button": {
+          "type": "bundle_button",
+          "disabled": true,
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "product_meta",
+        "color_swatches",
+        "partner_TwcrBf",
+        "buy_buttons",
+        "bundle_jGjCXy",
+        "bundle_button",
+        "description"
+      ],
+      "settings": {
+        "show_share_buttons": false,
+        "show_vendor": false,
+        "show_sku": false,
+        "show_taxes_included": false,
+        "description_below_add_to_cart": true,
+        "selector_mode": "dropdown",
+        "show_color_swatch": false,
+        "show_color_carousel": false,
+        "show_quantity_selector": true,
+        "show_inventory_quantity": false,
+        "inventory_quantity_threshold": 3,
+        "show_price_in_button": false,
+        "show_payment_button": false,
+        "show_pickup_availability": false,
+        "bundle_price_product": "intent-black",
+        "bundle_page_url": "",
+        "bundle_button_image": "shopify://shop_images/3-PACK_bundle_300_new.png",
+        "bundle_title": "3 pack bundle",
+        "bundle_subtitle": "Choose any 3 styles",
+        "bundle_discount_prefix": "save",
+        "bundle_discount_value": "20%",
+        "image_size": "large",
+        "stack_images": false,
+        "show_thumbnails": true,
+        "enable_image_zoom": false,
+        "enable_video_looping": false,
+        "tab_page_1_handle": "",
+        "tab_page_2_handle": "shipping-delivery",
+        "reviews_enabled": false,
+        "featured_image_size": "large"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "show_product_recommendations": true,
+        "heading": "You may also like",
+        "show_product_info": true,
+        "show_vendor": false,
+        "show_color_swatch": false
+      }
+    },
+    "recently-viewed-products": {
+      "type": "recently-viewed-products",
+      "settings": {
+        "show_section": false,
+        "title": "Recently viewed",
+        "show_product_info": true,
+        "show_vendor": false,
+        "show_color_swatch": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product-recommendations",
+    "recently-viewed-products"
+  ]
+}

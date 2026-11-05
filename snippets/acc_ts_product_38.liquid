@@ -1,0 +1,146 @@
+{%- liquid
+  assign bid = block.id
+  if block.settings.lazy_load
+    assign img_loading = 'lazy'
+  else
+    assign img_loading = 'eager'
+  endif
+  assign alt_fallbacks = 'UFC,Florida Freedom,PBR' | split: ','
+-%}
+
+{%- style -%}
+#ACC_TS_Product_38_{{ bid }} {
+    --acc-ts-product-38-card-pad: 12px;
+    --acc-ts-product-38-gap: 8px;
+    --acc-ts-product-38-heading-size: 12px;
+    --acc-ts-product-38-heading-gap: 24px;
+    --acc-ts-product-38-logo-size: 72px;
+    --acc-ts-product-38-logo-gap: 24px;
+    --acc-ts-product-38-font: Montserrat, sans-serif;
+
+    --acc-ts-product-38-card-bg: {{ block.settings.card_bg }};
+    --acc-ts-product-38-card-border: {{ block.settings.card_border }};
+    --acc-ts-product-38-heading-color: {{ block.settings.heading_color }};
+    --acc-ts-product-38-divider-color: {{ block.settings.divider_color }};
+    --acc-ts-product-38-pt: {{ block.settings.padding_top }}px;
+    --acc-ts-product-38-pb: {{ block.settings.padding_bottom }}px;
+}
+
+.ACC_TS_Product_38_wrapper {
+    width: 100%;
+    padding: var(--acc-ts-product-38-pt) 0 var(--acc-ts-product-38-pb);
+    box-sizing: border-box;
+}
+
+.ACC_TS_Product_38_card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--acc-ts-product-38-gap);
+    width: 100%;
+    padding: var(--acc-ts-product-38-card-pad);
+    background: var(--acc-ts-product-38-card-bg);
+    border: 1px solid var(--acc-ts-product-38-card-border);
+    box-sizing: border-box;
+}
+
+.ACC_TS_Product_38_heading_row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--acc-ts-product-38-heading-gap);
+    width: 100%;
+}
+
+.ACC_TS_Product_38_divider {
+    flex: 1 0 0;
+    min-width: 1px;
+    height: 1px;
+    background: var(--acc-ts-product-38-divider-color);
+}
+
+.ACC_TS_Product_38_heading {
+    margin: 0;
+    flex-shrink: 0;
+    font-family: var(--acc-ts-product-38-font);
+    font-weight: 700;
+    font-size: var(--acc-ts-product-38-heading-size);
+    line-height: normal;
+    color: var(--acc-ts-product-38-heading-color);
+    text-transform: uppercase;
+    white-space: nowrap;
+    letter-spacing: .2em;
+}
+
+.ACC_TS_Product_38_logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--acc-ts-product-38-logo-gap);
+    width: 100%;
+}
+
+.ACC_TS_Product_38_logo {
+    position: relative;
+    flex-shrink: 0;
+    width: var(--acc-ts-product-38-logo-size);
+    height: var(--acc-ts-product-38-logo-size);
+    overflow: hidden;
+}
+
+.ACC_TS_Product_38_logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@media (max-width: 1007px) {
+    #ACC_TS_Product_38_{{ bid }} {
+        --acc-ts-product-38-heading-size: 10px;
+        --acc-ts-product-38-pt: {{ block.settings.padding_top_mobile }}px;
+        --acc-ts-product-38-pb: {{ block.settings.padding_bottom_mobile }}px;
+    }
+    .ACC_TS_Product_38 .ProductForm {
+        margin-top: 17px;
+    }
+}
+
+@media (max-width: 767px) {
+    #ACC_TS_Product_38_{{ bid }} {
+        --acc-ts-product-38-logo-size: 82px;
+    }
+}
+{%- endstyle -%}
+
+<div class="ACC_TS_Product_38_wrapper" id="ACC_TS_Product_38_{{ bid }}" {{ block.shopify_attributes }}>
+  <div class="ACC_TS_Product_38_card">
+    {%- if block.settings.heading != blank -%}
+      <div class="ACC_TS_Product_38_heading_row">
+        <span class="ACC_TS_Product_38_divider" aria-hidden="true"></span>
+        <p class="ACC_TS_Product_38_heading">{{ block.settings.heading }}</p>
+        <span class="ACC_TS_Product_38_divider" aria-hidden="true"></span>
+      </div>
+    {%- endif -%}
+
+    <div class="ACC_TS_Product_38_logos">
+      {%- for i in (1..3) -%}
+        {%- assign img_key = 'image_' | append: i -%}
+        {%- assign img = block.settings[img_key] -%}
+        {%- if img != blank -%}
+          {%- assign idx = i | minus: 1 -%}
+          <div class="ACC_TS_Product_38_logo">
+            <img
+              src="{{ img | image_url: width: 200 }}"
+              alt="{{ img.alt | default: alt_fallbacks[idx] | escape }}"
+              width="72"
+              height="72"
+              loading="{{ img_loading }}"
+              {% unless block.settings.lazy_load %}fetchpriority="high"{% endunless %}
+            >
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
