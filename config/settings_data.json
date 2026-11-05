@@ -9,7 +9,7 @@
  */
 {
   "current": {
-    "free_gift_enabled": false,
+    "free_gift_enabled": true,
     "free_gift_product": "bumper-sticker",
     "heading_color": "#131313",
     "text_color": "#131313",
