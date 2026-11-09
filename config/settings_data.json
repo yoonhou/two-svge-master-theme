@@ -389,7 +389,7 @@
           "bundle_card": {
             "type": "bundle_card",
             "settings": {
-              "cart_bundle_card_visible": false
+              "show_bundle_upsell_card": true
             }
           }
         },

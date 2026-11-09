@@ -8,15 +8,17 @@ For a theme that already has this free gift implementation and ACC drawer, trans
 | --- | --- |
 | `assets/acc-cart-drawer.css` | The marked free gift CSS sections, including the bold gift name and vertically stacked, right-aligned gift prices. |
 | `assets/theme.css` | The start/end comments around the existing free gift styles; no appearance changes were made there. |
-| `sections/acc-cart-drawer.liquid` | The `upsell_enabled` checkbox in the Bundle upsell settings and the condition around the upsell card. It defaults to on. |
-| `sections/cart-template.liquid` | The condition that connects the Bundle card's **Hide cart bundle card** checkbox to its display. |
+| `sections/acc-cart-drawer.liquid` | The `upsell_enabled` checkbox in the Bundle upsell settings and the condition around the upsell card. It defaults to checked. |
+| `sections/cart-template.liquid` | The **Show bundle upsell card** checkbox and the condition around the cart page card. |
 
 Merge these changes into the corresponding files in the destination theme; replacing entire files can overwrite other theme customizations. The full free gift feature has additional dependencies listed below. This documentation file is for reference and does not need to be copied for the storefront to work.
 
 After transferring the code, check the settings in the destination theme's editor:
 
-- **ACC cart drawer → Bundle upsell → Show bundle upsell** controls the drawer card. It defaults to on; it does not control the cart page.
-- **Cart page → Bundle card → Hide cart bundle card** controls the cart page card. Checked hides it; unchecked shows it. The repository's `templates/cart.json` has this checked, so the card will be hidden when the newly connected setting is used with that template. Another theme can have a different saved value. Copying `templates/cart.json` is not required for the code change; review its settings rather than replacing the destination template wholesale.
+- **ACC cart drawer → Bundle upsell → Show bundle upsell card** controls the drawer card. Checked shows it; unchecked hides it. It defaults to checked and does not control the cart page.
+- **Cart page → Bundle card → Show bundle upsell card** controls the cart page card with the same checked/unchecked behavior. The repository's `templates/cart.json` has this unchecked, so the card is hidden. Another theme can have a different saved value. Copying `templates/cart.json` is not required for the code change; review its settings rather than replacing the destination template wholesale.
+
+The cart page uses a new setting ID. When updating another theme, set the new checkbox to match the desired visibility; the earlier **Hide cart bundle card** value is not automatically transferred. This repository's saved cart template and legacy section settings have been updated to preserve their previous visibility.
 
 Preview both settings in the destination theme after transfer. These switches hide promotional cards; they do not enable or disable the underlying bundle or its discount.
 
