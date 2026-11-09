@@ -273,6 +273,7 @@
         {%- endif -%}
       </div>
 
+      {%- if section.settings.upsell_enabled -%}
       <div class="{{ tn }}-cart-upsell" style="display: {% if cart.item_count == 0 %}none{% else %}block{% endif %};">
         {%- if cart.item_count > 0 -%}
           <div class="{{ tn }}-upsell-container">
@@ -316,6 +317,7 @@
           </div>
         {%- endif -%}
       </div>
+      {%- endif -%}
     </div>
 
     <div class="{{ tn }}-cart-drawer-footer" style="display: {% if cart.item_count == 0 %}none{% else %}flex{% endif %};">
@@ -404,6 +406,12 @@
     {
       "type": "header",
       "content": "Bundle upsell"
+    },
+    {
+      "type": "checkbox",
+      "id": "upsell_enabled",
+      "label": "Show bundle upsell",
+      "default": true
     },
     {
       "type": "product",

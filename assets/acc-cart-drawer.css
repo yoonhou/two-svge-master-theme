@@ -24,6 +24,7 @@ span.ACC_TS_Cart_10-cart-savings-main-total {
     display: none;
 }
 
+/* Free gift CSS: start */
 /* Gift metadata stays compact and visible below the gift product title. */
 .ACC_TS_Cart_10-free-gift-label {
     display: inline-flex;
@@ -56,6 +57,7 @@ span.ACC_TS_Cart_10-cart-savings-main-total {
     height: 14px;
     flex: 0 0 14px;
 }
+/* Free gift CSS: end */
 
 .ACC_TS_Cart_10-item-price-original {
     margin-left: 6px;
@@ -235,6 +237,7 @@ img.ACC_TS_Cart_10-item-image-img {
     align-self: stretch;
 }
 
+/* Free gift CSS: start */
 /* Gift title and price share the first grid row. */
 .ACC_TS_Cart_10-item-details-inner--free-gift {
     display: grid;
@@ -245,7 +248,14 @@ img.ACC_TS_Cart_10-item-image-img {
 
 .ACC_TS_Cart_10-item-details-inner--free-gift .ACC_TS_Cart_10-item-name {
     min-width: 0;
+    font-weight: bold;
 }
+
+.ACC_TS_Cart_10-item-details-inner--free-gift .ACC_TS_Cart_10-item-price {
+    flex-direction: column;
+    align-items: flex-end;
+}
+/* Free gift CSS: end */
 
 span.ACC_TS_Cart_10-item-price-original {
     display: inline-block;

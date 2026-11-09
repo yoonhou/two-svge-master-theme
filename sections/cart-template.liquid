@@ -78,6 +78,7 @@
 {%- for block in section.blocks -%}
 {%- case block.type -%}
 {%- when 'bundle_card' -%}
+{%- unless block.settings.cart_bundle_card_visible -%}
 {%- liquid
 assign tn = 'xlr8d-product-03'
 assign bundle_page_url = block.settings.bundle_page_url | default: '/pages/bundle'
@@ -163,6 +164,7 @@ data-{{ tn }}-bundle
 
 {{ 'xlr8d-product-03.css' | asset_url | stylesheet_tag }}
 
+{%- endunless -%}
 {%- endcase -%}
 {%- endfor -%}
 <a href="{{ routes.collections_url }}/sunglasses" title="Continue shopping" class="continue_shopping_button Cart__Checkout Button Button--secondary Button--full">Continue shopping</a>

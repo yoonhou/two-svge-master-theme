@@ -1,5 +1,25 @@
 # Free gift implementation and theme migration
 
+## Copying the latest cart changes
+
+For a theme that already has this free gift implementation and ACC drawer, transfer these changes from this repository:
+
+| File | What to transfer |
+| --- | --- |
+| `assets/acc-cart-drawer.css` | The marked free gift CSS sections, including the bold gift name and vertically stacked, right-aligned gift prices. |
+| `assets/theme.css` | The start/end comments around the existing free gift styles; no appearance changes were made there. |
+| `sections/acc-cart-drawer.liquid` | The `upsell_enabled` checkbox in the Bundle upsell settings and the condition around the upsell card. It defaults to on. |
+| `sections/cart-template.liquid` | The condition that connects the Bundle card's **Hide cart bundle card** checkbox to its display. |
+
+Merge these changes into the corresponding files in the destination theme; replacing entire files can overwrite other theme customizations. The full free gift feature has additional dependencies listed below. This documentation file is for reference and does not need to be copied for the storefront to work.
+
+After transferring the code, check the settings in the destination theme's editor:
+
+- **ACC cart drawer → Bundle upsell → Show bundle upsell** controls the drawer card. It defaults to on; it does not control the cart page.
+- **Cart page → Bundle card → Hide cart bundle card** controls the cart page card. Checked hides it; unchecked shows it. The repository's `templates/cart.json` has this checked, so the card will be hidden when the newly connected setting is used with that template. Another theme can have a different saved value. Copying `templates/cart.json` is not required for the code change; review its settings rather than replacing the destination template wholesale.
+
+Preview both settings in the destination theme after transfer. These switches hide promotional cards; they do not enable or disable the underlying bundle or its discount.
+
 ## Setup reminder: hide the gift product's add-to-cart button
 
 Before launching the promotion or moving it to another theme:
@@ -33,13 +53,13 @@ Selecting the gift in Theme settings or adding a `free-gift` product tag does **
 | `layout/theme.liquid` | Publishes those settings as `window.freeGiftSettings`, loads `free-gift.js`, renders the ACC drawer section, and suppresses the sticky add-to-cart bar on the `free-gift` product template. |
 | `templates/product.free-gift.json` | View-only product template with no purchase form block, quantity selector, or share buttons. |
 | `snippets/cart-items.liquid` | Cart page/legacy cart item presentation and qualified-message markup: gift last, label and icon, compare-at price, hidden link/controls, and hidden internal/checkout properties. Also adjusts image wrapper markup to fix cart spacing. |
-| `assets/theme.css` | Styling for product labels, the cart gift label, and the qualified-cart notice. |
+| `assets/theme.css` | Styling for product labels, the cart gift label, and the qualified-cart notice, enclosed in free gift start/end comments. |
 | `snippets/product-item.liquid` | Adds the configured label to product cards. |
 | `snippets/product-item-collection.liquid` | Adds the configured label to collection product cards. |
 | `snippets/product-meta.liquid` | Adds the configured label to the product detail page. |
 | `sections/acc-cart-drawer.liquid` | ACC drawer qualified-message markup and gift line presentation, including price, label, icon, hidden link/controls, and gift-last ordering. |
 | `assets/acc-cart-drawer.js` | Custom ACC drawer cart behavior; emits `acc:cart:updated` after drawer cart changes so the gift manager can reconcile. |
-| `assets/acc-cart-drawer.css` | ACC drawer styling, including the gift label and gift item title/price layout. |
+| `assets/acc-cart-drawer.css` | ACC drawer styling, including marked free gift sections for the label, bold gift title, and stacked, right-aligned prices. |
 
 The bundle modal has an additional integration described below. Its other bundle-modal code is not required by the free gift feature.
 
@@ -78,9 +98,9 @@ Theme-specific selections and text are merchant configuration, not reusable code
 
 The Playwright suite and instructions are in [`tests/free-gift/README.md`](../tests/free-gift/README.md). The default suite runs the local gift script against simulated cart responses; the separately enabled storefront suite targets the test store's active theme. One simulated scenario remains unresolved: reconciliation does not remove an existing marked gift solely because it becomes unavailable. An earlier test storefront attempt returned HTTP 429 during a cart request, so its rapid-click and unmarked-sticker checkout scenarios have not been verified there.
 
-## Files changed in this working tree for other theme work
+## Other theme files to review separately
 
-The current worktree also contains changes that are not part of the free gift feature. Review and migrate these separately rather than copying them as free gift dependencies. `assets/cw-bundle-modal.js` has a bundle-specific integration described above; its other changes belong to the bundle modal itself and are not required by the free gift feature.
+The following files have been involved in other theme work and are not free gift dependencies. Review them separately when migrating between themes. `assets/cw-bundle-modal.js` has a bundle-specific integration described above; its other changes belong to the bundle modal itself and are not required by the free gift feature. This list is not a current working-tree status report.
 
 - `config/markets.json`, `config/settings_data.json`
 - `sections/product-template.liquid`, `snippets/acc_ts_product_38.liquid`
