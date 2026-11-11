@@ -6,7 +6,7 @@ For a theme that already has this free gift implementation and ACC drawer, trans
 
 | File | What to transfer |
 | --- | --- |
-| `assets/acc-cart-drawer.css` | The marked free gift CSS sections, including the bold gift name and vertically stacked, right-aligned gift prices. |
+| `assets/acc-cart-drawer.css` | The marked free gift CSS sections, including the gift name at font weight `600` and vertically stacked, right-aligned gift prices. |
 | `assets/theme.css` | The start/end comments around the existing free gift styles; no appearance changes were made there. |
 | `sections/acc-cart-drawer.liquid` | The `upsell_enabled` checkbox in the Bundle upsell settings and the condition around the upsell card. It defaults to checked. |
 | `sections/cart-template.liquid` | The **Show bundle upsell card** checkbox and the condition around the cart page card. |
@@ -61,7 +61,7 @@ Selecting the gift in Theme settings or adding a `free-gift` product tag does **
 | `snippets/product-meta.liquid` | Adds the configured label to the product detail page. |
 | `sections/acc-cart-drawer.liquid` | ACC drawer qualified-message markup and gift line presentation, including price, label, icon, hidden link/controls, and gift-last ordering. |
 | `assets/acc-cart-drawer.js` | Custom ACC drawer cart behavior; emits `acc:cart:updated` after drawer cart changes so the gift manager can reconcile. |
-| `assets/acc-cart-drawer.css` | ACC drawer styling, including marked free gift sections for the label, bold gift title, and stacked, right-aligned prices. |
+| `assets/acc-cart-drawer.css` | ACC drawer styling, including marked free gift sections for the label, gift title at font weight `600`, and stacked, right-aligned prices. |
 
 The bundle modal has an additional integration described below. Its other bundle-modal code is not required by the free gift feature.
 
