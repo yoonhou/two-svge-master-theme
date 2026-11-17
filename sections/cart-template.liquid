@@ -78,6 +78,13 @@
 {%- for block in section.blocks -%}
 {%- case block.type -%}
 {%- when 'bundle_card' -%}
+{% if block.settings.show_bundle_upsell_card != false %}
+    <style>
+        .bundle-cart-row{
+            display:none
+        }
+    </style>
+{% endif %}
 {%- if block.settings.show_bundle_upsell_card -%}
 {%- liquid
 assign tn = 'xlr8d-product-03'
